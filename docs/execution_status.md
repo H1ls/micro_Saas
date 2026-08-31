@@ -60,4 +60,4 @@
 | Block 3 analyze endpoint | DONE | `POST /api/analyze` покрыт тестом CSV happy path, raw text path и controlled `missing_input` error. |
 | Block 3 regression health check | DONE | `GET /api/health` вернул `200` и `{ "status": "ok" }`. |
 | Architecture fallback clarification | DONE | `docs/mvp_ai_dashboard_architecture_48h.md` уточняет: Block 3 строит fallback без LLM, Block 4 показывает его в UI, Block 5 добавляет LLM поверх fallback. |
-| Fallback verification after architecture clarification | DONE | `2026-08-31 19:07:14 +03:00`: compile passed, `pytest tests -q`: `14 passed`, `/api/analyze` fallback check passed. Commit: pending commit. |
+| Fallback verification after architecture clarification | DONE | `2026-08-31 19:07:14 +03:00`: compile passed, `pytest tests -q`: `14 passed`, `/api/analyze` fallback check passed. Commit: `35065cc0429ff1e5b69d857dca0fb7677c789ff7`. |
