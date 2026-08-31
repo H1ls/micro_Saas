@@ -13,7 +13,7 @@
 | 3 | `/api/analyze`, session store и deterministic dashboard fallback | DONE | 2026-08-31 18:23:13 +03:00 | `a25b6905a33d0ddaa4d09882653426af7b2e01ad` | Реализованы session store, fallback charts, fallback analysis и `POST /api/analyze`. |
 | 4 | Frontend shell, upload UX и первый dashboard | DONE | 2026-08-31 19:19:47 +03:00 | `e53b88f` | Реализованы React/Vite frontend shell, upload UX, typed API client, session state, insight и первый `bar` chart. |
 | 5 | LLM analysis с JSON schema и guardrails | DONE | 2026-08-31 19:30:41 +03:00 | `not committed by user request` | Реализованы LLM client, prompt, JSON parsing, validation, подключение в `/api/analyze` и fallback при сбоях LLM. |
-| 6 | AI-графики, `/api/ask` и чат по данным | DONE | 2026-08-31 21:03:01 +03:00 | `created after status update` | Реализованы line/pie chart data, `/api/ask`, chat service, ask prompt и AskPanel. |
+| 6 | AI-графики, `/api/ask` и чат по данным | DONE | 2026-08-31 21:03:01 +03:00 | `966800d` | Реализованы line/pie chart data, `/api/ask`, chat service, ask prompt и AskPanel. |
 
 ## Подзадачи блока 1
 
@@ -69,11 +69,11 @@
 
 | Подзадача | Задача | Статус | Дата завершения | Commit | Комментарий |
 |---:|---|---|---|---|---|
-| 6.1 | Расширить `chart_service.prepare_charts()` для `bar`, `line`, `pie` | DONE | 2026-08-31 21:03:01 +03:00 | `created after status update` | Backend готовит 2-3 `PreparedChart`; invalid specs заменяются fallback specs. |
-| 6.2 | Обновить `ChartRenderer` под `bar`, `line`, `pie` | DONE | 2026-08-31 21:03:01 +03:00 | `created after status update` | UI корректно рендерит разрешенные типы графиков через Recharts. |
-| 6.3 | Создать `prompts/ask_prompt.py` и `chat_service.answer_question()` | DONE | 2026-08-31 21:03:01 +03:00 | `created after status update` | Service возвращает `answer`, `confidence`, `used_columns` и fallback для ответа вне dataset. |
-| 6.4 | Реализовать `POST /api/ask` | DONE | 2026-08-31 21:03:01 +03:00 | `created after status update` | Вопрос по `session_id` получает ответ; отсутствующая сессия возвращает controlled error. |
-| 6.5 | Реализовать `AskPanel` и client-side chat history | DONE | 2026-08-31 21:03:01 +03:00 | `created after status update` | Пользователь задает вопросы и видит историю текущей вкладки. |
+| 6.1 | Расширить `chart_service.prepare_charts()` для `bar`, `line`, `pie` | DONE | 2026-08-31 21:03:01 +03:00 | `966800d` | Backend готовит 2-3 `PreparedChart`; invalid specs заменяются fallback specs. |
+| 6.2 | Обновить `ChartRenderer` под `bar`, `line`, `pie` | DONE | 2026-08-31 21:03:01 +03:00 | `966800d` | UI корректно рендерит разрешенные типы графиков через Recharts. |
+| 6.3 | Создать `prompts/ask_prompt.py` и `chat_service.answer_question()` | DONE | 2026-08-31 21:03:01 +03:00 | `966800d` | Service возвращает `answer`, `confidence`, `used_columns` и fallback для ответа вне dataset. |
+| 6.4 | Реализовать `POST /api/ask` | DONE | 2026-08-31 21:03:01 +03:00 | `966800d` | Вопрос по `session_id` получает ответ; отсутствующая сессия возвращает controlled error. |
+| 6.5 | Реализовать `AskPanel` и client-side chat history | DONE | 2026-08-31 21:03:01 +03:00 | `966800d` | Пользователь задает вопросы и видит историю текущей вкладки. |
 
 ## Проверки после завершения
 
