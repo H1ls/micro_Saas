@@ -20,7 +20,9 @@ class Settings:
     app_name: str
     api_prefix: str
     openai_api_key: str | None
+    llm_base_url: str | None
     llm_model: str
+    llm_timeout_seconds: int
     max_upload_size_mb: int
     session_ttl_minutes: int
 
@@ -32,7 +34,9 @@ def get_settings() -> Settings:
         app_name=os.getenv("APP_NAME", "AI Dashboard MVP"),
         api_prefix=os.getenv("API_PREFIX", "/api"),
         openai_api_key=os.getenv("OPENAI_API_KEY"),
-        llm_model=os.getenv("LLM_MODEL", "gpt-4.1-mini"),
+        llm_base_url=os.getenv("LOCAL_AI_BASE_URL") or os.getenv("OPENAI_BASE_URL"),
+        llm_model=os.getenv("LOCAL_AI_MODEL") or os.getenv("LLM_MODEL", "gpt-4.1-mini"),
+        llm_timeout_seconds=_get_int_env("LLM_TIMEOUT_SECONDS", 20),
         max_upload_size_mb=_get_int_env("MAX_UPLOAD_SIZE_MB", 10),
         session_ttl_minutes=_get_int_env("SESSION_TTL_MINUTES", 60),
     )

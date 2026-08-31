@@ -1,7 +1,31 @@
 from __future__ import annotations
 
+import json
+from typing import Any
+
+from pydantic import ValidationError
+
+from app.domain.errors import InvalidLLMResponseError, LLMUnavailableError
 from app.domain.models import AIAnalysis, ChartSpec, NormalizedDataset
+from app.prompts.analysis_prompt import ANALYSIS_SYSTEM_PROMPT, build_analysis_prompt
 from app.services.chart_service import recommend_fallback_charts
+from app.services.llm_client import complete_json
+
+
+MAX_HEADLINE_LENGTH = 140
+MAX_NARRATIVE_LENGTH = 900
+
+
+def analyze_dataset(dataset: NormalizedDataset) -> AIAnalysis:
+    try:
+        raw = complete_json(
+            system_prompt=ANALYSIS_SYSTEM_PROMPT,
+            user_prompt=build_analysis_prompt(dataset),
+        )
+        analysis = parse_analysis_json(raw)
+        return validate_analysis(dataset, analysis)
+    except (LLMUnavailableError, InvalidLLMResponseError):
+        return fallback_analysis(dataset)
 
 
 def fallback_analysis(dataset: NormalizedDataset) -> AIAnalysis:
@@ -15,6 +39,49 @@ def fallback_analysis(dataset: NormalizedDataset) -> AIAnalysis:
         key_observations=_build_observations(dataset, charts),
         charts=charts,
     )
+
+
+def parse_analysis_json(raw: dict[str, Any] | str) -> AIAnalysis:
+    if isinstance(raw, str):
+        try:
+            payload = json.loads(raw)
+        except json.JSONDecodeError as exc:
+            raise InvalidLLMResponseError() from exc
+    else:
+        payload = raw
+
+    if not isinstance(payload, dict):
+        raise InvalidLLMResponseError()
+
+    normalized_payload = dict(payload)
+    if "key_observations" not in normalized_payload and "observations" in normalized_payload:
+        normalized_payload["key_observations"] = normalized_payload["observations"]
+    if "charts" not in normalized_payload and "chart_specs" in normalized_payload:
+        normalized_payload["charts"] = normalized_payload["chart_specs"]
+
+    try:
+        return AIAnalysis.model_validate(normalized_payload)
+    except ValidationError as exc:
+        raise InvalidLLMResponseError() from exc
+
+
+def validate_analysis(dataset: NormalizedDataset, analysis: AIAnalysis) -> AIAnalysis:
+    valid_columns = {column.name for column in dataset.columns}
+
+    if not analysis.headline.strip() or not analysis.narrative.strip():
+        raise InvalidLLMResponseError()
+    if len(analysis.headline) > MAX_HEADLINE_LENGTH:
+        raise InvalidLLMResponseError()
+    if len(analysis.narrative) > MAX_NARRATIVE_LENGTH:
+        raise InvalidLLMResponseError()
+
+    for chart in analysis.charts:
+        if chart.x_key not in valid_columns:
+            raise InvalidLLMResponseError()
+        if chart.y_key is None or chart.y_key not in valid_columns:
+            raise InvalidLLMResponseError()
+
+    return analysis
 
 
 def _build_headline(dataset: NormalizedDataset, charts: list[ChartSpec]) -> str:

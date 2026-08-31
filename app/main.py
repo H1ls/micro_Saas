@@ -2,7 +2,7 @@ from fastapi import FastAPI, Request
 from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse
 
-from app.api.routes import analyze, health
+from app.api.routes import analyze, ask, health
 from app.core.config import get_settings
 from app.domain.errors import AppError
 
@@ -35,3 +35,4 @@ async def validation_error_handler(_: Request, exc: RequestValidationError) -> J
 
 app.include_router(health.router, prefix=settings.api_prefix)
 app.include_router(analyze.router, prefix=settings.api_prefix)
+app.include_router(ask.router, prefix=settings.api_prefix)

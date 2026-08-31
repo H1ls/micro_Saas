@@ -22,9 +22,9 @@ export function InsightHero({ analysis, dataset }: InsightHeroProps) {
         </div>
       </div>
 
-      {analysis.observations.length > 0 && (
+      {analysis.key_observations.length > 0 && (
         <div className="mt-5 grid gap-3 md:grid-cols-2">
-          {analysis.observations.slice(0, 4).map((observation) => (
+          {analysis.key_observations.slice(0, 4).map((observation) => (
             <div key={observation} className="rounded-md border border-slate-200 bg-slate-50 px-4 py-3 text-sm leading-6 text-slate-700">
               {observation}
             </div>

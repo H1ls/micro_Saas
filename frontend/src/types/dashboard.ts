@@ -1,5 +1,5 @@
 export type SourceType = "csv" | "excel" | "text";
-export type ColumnType = "number" | "datetime" | "category" | "text" | "unknown";
+export type ColumnType = "number" | "date" | "category" | "text" | "unknown";
 export type ChartType = "bar" | "line" | "pie";
 
 export interface ColumnProfile {
@@ -22,7 +22,7 @@ export interface ChartSpec {
   title: string;
   type: ChartType;
   x_key: string;
-  y_key: string;
+  y_key: string | null;
   reason: string;
 }
 
@@ -34,8 +34,8 @@ export interface PreparedChart {
 export interface AIAnalysis {
   headline: string;
   narrative: string;
-  observations: string[];
-  chart_specs: ChartSpec[];
+  key_observations: string[];
+  charts: ChartSpec[];
 }
 
 export interface AnalyzeResponse {
@@ -50,4 +50,15 @@ export interface ApiErrorResponse {
     code?: string;
     message?: string;
   };
+}
+
+export interface AskRequest {
+  session_id: string;
+  question: string;
+}
+
+export interface AskResponse {
+  answer: string;
+  confidence: "high" | "medium" | "low" | "none";
+  used_columns: string[];
 }

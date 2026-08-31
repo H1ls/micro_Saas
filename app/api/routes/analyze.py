@@ -3,7 +3,7 @@ from __future__ import annotations
 from fastapi import APIRouter, File, Form, UploadFile
 
 from app.api.schemas import AnalyzeResponse, DatasetSummary
-from app.services.analysis_service import fallback_analysis
+from app.services.analysis_service import analyze_dataset as analyze_dataset_with_llm
 from app.services.chart_service import prepare_charts
 from app.services.ingest_service import normalize_dataframe, parse_input
 from app.services.session_store import create_session
@@ -26,7 +26,7 @@ def analyze_dataset(
         parsed_input.source_type,
         parsed_input.filename,
     )
-    analysis = fallback_analysis(dataset)
+    analysis = analyze_dataset_with_llm(dataset)
     charts = prepare_charts(dataset, analysis.charts)
     session = create_session(dataset, analysis, charts)
 

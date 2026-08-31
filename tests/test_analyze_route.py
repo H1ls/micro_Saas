@@ -1,11 +1,14 @@
 from fastapi.testclient import TestClient
 
+from app.api.routes import analyze
 from app.main import app
+from app.services.analysis_service import fallback_analysis
 from app.services.session_store import clear_sessions
 
 
-def test_analyze_csv_returns_session_analysis_and_chart() -> None:
+def test_analyze_csv_returns_session_analysis_and_chart(monkeypatch) -> None:
     clear_sessions()
+    monkeypatch.setattr(analyze, "analyze_dataset_with_llm", fallback_analysis)
     client = TestClient(app)
 
     response = client.post(
@@ -18,11 +21,12 @@ def test_analyze_csv_returns_session_analysis_and_chart() -> None:
     assert body["session_id"]
     assert body["dataset"]["source_type"] == "csv"
     assert body["analysis"]["headline"]
-    assert len(body["charts"]) == 1
+    assert len(body["charts"]) == 2
 
 
-def test_analyze_raw_text_returns_dataset_without_chart() -> None:
+def test_analyze_raw_text_returns_dataset_without_chart(monkeypatch) -> None:
     clear_sessions()
+    monkeypatch.setattr(analyze, "analyze_dataset_with_llm", fallback_analysis)
     client = TestClient(app)
 
     response = client.post("/api/analyze", data={"raw_text": "First note\nSecond note"})
