@@ -230,6 +230,10 @@ class DatasetSession(BaseModel):
 - `file`: optional CSV/XLS/XLSX;
 - `raw_text`: optional string.
 
+В Block 3 endpoint работает только через deterministic fallback без LLM. Это намеренный фундамент: backend уже умеет принять данные, нормализовать dataset, создать session, вернуть базовый narrative и подготовленные chart data даже без AI-провайдера.
+
+В Block 5 поверх этого добавляется основной LLM-путь. Если LLM недоступен, вернул невалидный JSON или результат не прошел validation, `/api/analyze` должен использовать тот же fallback из Block 3, а не отдавать сломанную страницу или неполный контракт.
+
 Возвращает:
 
 ```json
@@ -319,6 +323,8 @@ class DatasetSession(BaseModel):
 
 Зачем: LLM нестабилен. Этот слой держит строгий JSON parsing, fallback и запрет на несуществующие колонки.
 
+`fallback_analysis()` является постоянной частью архитектуры, а не временным mock. В Block 3 он используется как основной путь без LLM. В Block 5 `analyze_dataset()` сначала пробует LLM-путь, затем валидирует JSON и business rules; при любой ошибке LLM, невалидном JSON или проваленной validation возвращается `fallback_analysis()`.
+
 ### `chart_service.py`
 
 Функции:
@@ -330,6 +336,8 @@ class DatasetSession(BaseModel):
 - `aggregate_for_pie(df, x_key, y_key)`
 
 Зачем: AI выбирает смысл графиков, но backend отвечает за корректные данные. Если AI вернул плохой chart spec, deterministic fallback все равно покажет 1-2 графика.
+
+В Block 3 chart fallback строит надежный минимум без AI, начиная с первого `bar` chart для пары category+number. В Block 5 AI может рекомендовать более осмысленные chart specs, но `prepare_charts()` все равно валидирует поля и может вернуться к fallback specs.
 
 ### `chat_service.py`
 
@@ -520,7 +528,9 @@ class SessionNotFoundError(AppError): ...
 
 #### Блок 3. `/api/analyze`, session store и deterministic dashboard fallback
 
-Цель: сделать первый полный backend-сценарий upload -> normalized dataset -> analysis response -> session.
+Цель: построить надежный backend-фундамент без AI: upload -> normalized dataset -> deterministic analysis -> prepared chart data -> session.
+
+Принцип блока: `/api/analyze` работает через fallback без LLM. Это не временная заглушка, а базовый устойчивый путь продукта, который остается доступен после появления LLM.
 
 Подзадачи:
 
@@ -541,13 +551,15 @@ class SessionNotFoundError(AppError): ...
    - До начала: есть schemas и error handler из блока 1.
    - Готово, когда: файл или текст возвращает `session_id`, dataset summary, analysis и charts.
 
-Результат блока: продукт уже демонстрируем с deterministic анализом и одним графиком, даже без API key.
+Результат блока: backend уже демонстрируем с deterministic анализом и одним графиком, даже без API key. Если LLM не работает в будущих блоках, этот путь остается fallback.
 
 Обязателен для демо: да.
 
 #### Блок 4. Frontend shell, upload UX и первый dashboard
 
-Цель: собрать рабочий UI-путь upload -> analyze -> insight -> chart.
+Цель: показать надежный backend-фундамент из Block 3 в UI: upload -> analyze -> insight -> chart.
+
+Принцип блока: frontend не добавляет AI-логику и не агрегирует dataset самостоятельно. Он вызывает `/api/analyze`, отображает fallback-compatible контракт и показывает loading/error/ready states.
 
 Подзадачи:
 
@@ -580,6 +592,8 @@ class SessionNotFoundError(AppError): ...
 
 Цель: заменить fallback как основной источник narrative на LLM, сохранив fallback при сбоях.
 
+Принцип блока: LLM накладывается сверху на уже работающий deterministic flow. Основной путь становится LLM -> JSON -> Pydantic validation -> business validation -> application. При ошибке LLM, невалидном JSON или проваленной validation используется fallback из Block 3.
+
 Подзадачи:
 
 1. Реализовать `llm_client.complete_json()` с timeout и чтением env.
@@ -593,11 +607,11 @@ class SessionNotFoundError(AppError): ...
 3. Реализовать `analysis_service.analyze_dataset()`, `parse_analysis_json()`, `validate_analysis()`.
    - Зависит от: шагов 1-2 и блока 3.
    - До начала: есть `AIAnalysis`, `ChartSpec`, fallback.
-   - Готово, когда: валидный LLM JSON используется, невалидный JSON уходит в fallback.
+   - Готово, когда: валидный LLM JSON используется, а ошибка LLM, невалидный JSON или проваленная validation уходят в fallback из Block 3.
 4. Подключить LLM analysis в `/api/analyze`.
    - Зависит от: шага 3.
    - До начала: fallback endpoint уже работает.
-   - Готово, когда: при наличии API key dashboard получает AI headline/narrative, а без успешного LLM не ломается.
+   - Готово, когда: при наличии API key dashboard получает AI headline/narrative, а без успешного LLM использует deterministic analysis из Block 3 и не ломается.
 
 Результат блока: основной promise продукта работает через AI, но остается надежный fallback.
 
