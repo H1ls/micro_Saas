@@ -9,7 +9,7 @@
 | Блок | Название из execution_plan.md | Статус | Дата завершения | Commit | Комментарий |
 |---:|---|---|---|---|---|
 | 1 | Backend foundation и контракты API | DONE | 2026-08-31 17:51:49 +03:00 | `771192a356396b4e138267517e4daa219de707d7` | Выполнены backend skeleton, config, domain-модели, API schemas, domain errors, global error handler и health endpoint. |
-| 2 | Ingestion, domain-модели и compact context | DONE | 2026-08-31 18:02:44 +03:00 | `2045332fb98ff59e11ecacdde627c5af5c152262` | Реализованы ingestion, profiling, compact context, normalize и тесты блока. |
+| 2 | Ingestion, domain-модели и compact context | DONE | 2026-08-31 18:02:44 +03:00 | `870dcdb9ed076de39a04e464028b2b0c54898c44` | Реализованы ingestion, profiling, compact context, normalize и тесты блока. |
 
 ## Подзадачи блока 1
 
@@ -27,11 +27,11 @@
 
 | Подзадача | Задача | Статус | Дата завершения | Commit | Комментарий |
 |---:|---|---|---|---|---|
-| 2.1 | Domain-модели | DONE | 2026-08-31 18:02:44 +03:00 | `2045332fb98ff59e11ecacdde627c5af5c152262` | Модели уже были реализованы в Блоке 1 и переиспользованы без дублирования. |
-| 2.2 | `ingest_service.validate_file()` и ограничения формата/размера | DONE | 2026-08-31 18:02:44 +03:00 | `2045332fb98ff59e11ecacdde627c5af5c152262` | Поддержаны `.csv`, `.xls`, `.xlsx`, controlled errors для формата и размера. |
-| 2.3 | `parse_input()` для CSV, Excel первого листа и raw text | DONE | 2026-08-31 18:02:44 +03:00 | `2045332fb98ff59e11ecacdde627c5af5c152262` | CSV/Excel/raw text приводятся к `pd.DataFrame`. |
-| 2.4 | `profiling_service.infer_column_profiles()` и `build_compact_context()` | DONE | 2026-08-31 18:02:44 +03:00 | `2045332fb98ff59e11ecacdde627c5af5c152262` | Формируются типы колонок, counts, samples и JSON compact context. |
-| 2.5 | `normalize_dataframe()` и unit tests | DONE | 2026-08-31 18:02:44 +03:00 | `2045332fb98ff59e11ecacdde627c5af5c152262` | Сервис возвращает `NormalizedDataset`; плохие входы покрыты controlled errors. |
+| 2.1 | Domain-модели | DONE | 2026-08-31 18:02:44 +03:00 | `870dcdb9ed076de39a04e464028b2b0c54898c44` | Модели уже были реализованы в Блоке 1 и переиспользованы без дублирования. |
+| 2.2 | `ingest_service.validate_file()` и ограничения формата/размера | DONE | 2026-08-31 18:02:44 +03:00 | `870dcdb9ed076de39a04e464028b2b0c54898c44` | Поддержаны `.csv`, `.xls`, `.xlsx`, controlled errors для формата и размера. |
+| 2.3 | `parse_input()` для CSV, Excel первого листа и raw text | DONE | 2026-08-31 18:02:44 +03:00 | `870dcdb9ed076de39a04e464028b2b0c54898c44` | CSV/Excel/raw text приводятся к `pd.DataFrame`. |
+| 2.4 | `profiling_service.infer_column_profiles()` и `build_compact_context()` | DONE | 2026-08-31 18:02:44 +03:00 | `870dcdb9ed076de39a04e464028b2b0c54898c44` | Формируются типы колонок, counts, samples и JSON compact context. |
+| 2.5 | `normalize_dataframe()` и unit tests | DONE | 2026-08-31 18:02:44 +03:00 | `870dcdb9ed076de39a04e464028b2b0c54898c44` | Сервис возвращает `NormalizedDataset`; плохие входы покрыты controlled errors. |
 
 ## Проверки после завершения
 
