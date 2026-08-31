@@ -11,7 +11,7 @@
 | 1 | Backend foundation и контракты API | DONE | 2026-08-31 17:51:49 +03:00 | `771192a356396b4e138267517e4daa219de707d7` | Выполнены backend skeleton, config, domain-модели, API schemas, domain errors, global error handler и health endpoint. |
 | 2 | Ingestion, domain-модели и compact context | DONE | 2026-08-31 18:02:44 +03:00 | `870dcdb9ed076de39a04e464028b2b0c54898c44` | Реализованы ingestion, profiling, compact context, normalize и тесты блока. |
 | 3 | `/api/analyze`, session store и deterministic dashboard fallback | DONE | 2026-08-31 18:23:13 +03:00 | `a25b6905a33d0ddaa4d09882653426af7b2e01ad` | Реализованы session store, fallback charts, fallback analysis и `POST /api/analyze`. |
-| 4 | Frontend shell, upload UX и первый dashboard | DONE | 2026-08-31 19:19:47 +03:00 | `created after status update` | Реализованы React/Vite frontend shell, upload UX, typed API client, session state, insight и первый `bar` chart. |
+| 4 | Frontend shell, upload UX и первый dashboard | DONE | 2026-08-31 19:19:47 +03:00 | `e53b88f` | Реализованы React/Vite frontend shell, upload UX, typed API client, session state, insight и первый `bar` chart. |
 
 ## Подзадачи блока 1
 
@@ -48,11 +48,11 @@
 
 | Подзадача | Задача | Статус | Дата завершения | Commit | Комментарий |
 |---:|---|---|---|---|---|
-| 4.1 | React/Vite frontend shell: `AppShell`, `App`, базовые стили Tailwind | DONE | 2026-08-31 19:19:47 +03:00 | `created after status update` | Frontend app собирается и показывает рабочий экран продукта, не landing page. |
-| 4.2 | `api/client.ts` и типы `dashboard.ts` под backend response | DONE | 2026-08-31 19:19:47 +03:00 | `created after status update` | Клиент отправляет `multipart/form-data` в `/api/analyze` и читает typed response. |
-| 4.3 | `UploadPanel`: file picker, dropzone, raw text, кнопка Analyze | DONE | 2026-08-31 19:19:47 +03:00 | `created after status update` | Пользователь может выбрать CSV/Excel или вставить текст и запустить анализ. |
-| 4.4 | `useDashboardSession`: loading, error, ready, current session | DONE | 2026-08-31 19:19:47 +03:00 | `created after status update` | UI обрабатывает success/error `/api/analyze` без падения. |
-| 4.5 | `InsightHero`, `ChartGrid`, `ChartRenderer` для первого `bar` chart | DONE | 2026-08-31 19:19:47 +03:00 | `created after status update` | После анализа видны headline, narrative, observations и первый bar chart. |
+| 4.1 | React/Vite frontend shell: `AppShell`, `App`, базовые стили Tailwind | DONE | 2026-08-31 19:19:47 +03:00 | `e53b88f` | Frontend app собирается и показывает рабочий экран продукта, не landing page. |
+| 4.2 | `api/client.ts` и типы `dashboard.ts` под backend response | DONE | 2026-08-31 19:19:47 +03:00 | `e53b88f` | Клиент отправляет `multipart/form-data` в `/api/analyze` и читает typed response. |
+| 4.3 | `UploadPanel`: file picker, dropzone, raw text, кнопка Analyze | DONE | 2026-08-31 19:19:47 +03:00 | `e53b88f` | Пользователь может выбрать CSV/Excel или вставить текст и запустить анализ. |
+| 4.4 | `useDashboardSession`: loading, error, ready, current session | DONE | 2026-08-31 19:19:47 +03:00 | `e53b88f` | UI обрабатывает success/error `/api/analyze` без падения. |
+| 4.5 | `InsightHero`, `ChartGrid`, `ChartRenderer` для первого `bar` chart | DONE | 2026-08-31 19:19:47 +03:00 | `e53b88f` | После анализа видны headline, narrative, observations и первый bar chart. |
 
 ## Проверки после завершения
 
