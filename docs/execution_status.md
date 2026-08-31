@@ -90,8 +90,8 @@
 
 | Задача | Статус | Дата завершения | Commit | Комментарий |
 |---|---|---|---|---|
-| Русские docstrings под классами и сложными функциями | DONE | 2026-08-31 22:35:05 +03:00 | `created after status update` | Добавлены docstrings к domain-моделям, public service functions, prompt builders и API handlers. |
-| Перевод сайта на русский | DONE | 2026-08-31 22:35:05 +03:00 | `created after status update` | Переведены visible UI тексты, frontend error copy и prompt-инструкции для русскоязычного narrative/ask output. |
+| Русские docstrings под классами и сложными функциями | DONE | 2026-08-31 22:35:05 +03:00 | `fef1e03` | Добавлены docstrings к domain-моделям, public service functions, prompt builders и API handlers. |
+| Перевод сайта на русский | DONE | 2026-08-31 22:35:05 +03:00 | `fef1e03` | Переведены visible UI тексты, frontend error copy и prompt-инструкции для русскоязычного narrative/ask output. |
 
 ## Проверки после завершения
 
