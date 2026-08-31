@@ -11,6 +11,8 @@ AskConfidence = Literal["high", "medium", "low", "none"]
 
 
 class ColumnProfile(BaseModel):
+    """Описание одной колонки dataset для profiling, LLM context и chart validation."""
+
     name: str
     type: ColumnType
     non_null_count: int
@@ -22,6 +24,8 @@ class ColumnProfile(BaseModel):
 
 
 class NormalizedDataset(BaseModel):
+    """Единый формат данных после parsing CSV, Excel или raw text."""
+
     source_type: SourceType
     filename: str | None = None
     columns: list[ColumnProfile]
@@ -32,6 +36,8 @@ class NormalizedDataset(BaseModel):
 
 
 class ChartSpec(BaseModel):
+    """Спецификация графика от LLM или fallback, которую backend обязан валидировать."""
+
     id: str
     title: str
     type: ChartType
@@ -41,11 +47,15 @@ class ChartSpec(BaseModel):
 
 
 class PreparedChart(BaseModel):
+    """Безопасный график для frontend: валидная спецификация и уже подготовленные данные."""
+
     spec: ChartSpec
     data: list[dict[str, Any]]
 
 
 class AIAnalysis(BaseModel):
+    """Структурированный narrative dashboard, прошедший Pydantic validation."""
+
     headline: str
     narrative: str
     key_observations: list[str]
@@ -53,6 +63,8 @@ class AIAnalysis(BaseModel):
 
 
 class DatasetSession(BaseModel):
+    """In-memory session с dataset, анализом и графиками для последующих вопросов."""
+
     id: str
     dataset: NormalizedDataset
     analysis: AIAnalysis

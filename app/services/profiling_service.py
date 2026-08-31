@@ -16,10 +16,14 @@ DATE_LIKE_PATTERN = re.compile(r"^\d{4}[-/]\d{1,2}[-/]\d{1,2}|^\d{1,2}[-/]\d{1,2
 
 
 def infer_column_profiles(df: pd.DataFrame) -> list[ColumnProfile]:
+    """Определяет типы и краткую статистику колонок без передачи всего dataframe в LLM."""
+
     return [_profile_column(name, df[name]) for name in df.columns]
 
 
 def build_compact_context(dataset: NormalizedDataset) -> str:
+    """Собирает компактный JSON context для LLM: schema, summaries и sample rows."""
+
     numeric_summary = []
     category_summary = []
     date_summary = []

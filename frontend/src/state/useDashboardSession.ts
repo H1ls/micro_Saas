@@ -19,7 +19,7 @@ export function useDashboardSession() {
       setStatus("ready");
     } catch (caught) {
       setSession(null);
-      setError(caught instanceof Error ? caught.message : "Analysis failed.");
+      setError(caught instanceof Error ? caught.message : "Не удалось проанализировать dataset.");
       setStatus("error");
     }
   }, []);

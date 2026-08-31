@@ -12,11 +12,11 @@ export function AppShell({ children }: PropsWithChildren) {
             </div>
             <div>
               <p className="text-sm font-semibold uppercase tracking-wide text-teal-700">AI Dashboard</p>
-              <h1 className="text-lg font-semibold leading-tight text-slate-950">Dataset insight workspace</h1>
+              <h1 className="text-lg font-semibold leading-tight text-slate-950">Рабочая область анализа данных</h1>
             </div>
           </div>
           <span className="hidden rounded-md border border-teal-200 bg-teal-50 px-3 py-1 text-sm font-medium text-teal-800 sm:inline-flex">
-            AI with fallback
+            AI с fallback
           </span>
         </div>
       </header>

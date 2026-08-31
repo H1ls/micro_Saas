@@ -14,6 +14,8 @@ VALID_CONFIDENCE: set[AskConfidence] = {"high", "medium", "low", "none"}
 
 
 def answer_question(session: DatasetSession, question: str) -> AskResponse:
+    """Отвечает через LLM только по compact context текущей session и валидирует used_columns."""
+
     try:
         raw = complete_json(
             system_prompt=ASK_SYSTEM_PROMPT,
@@ -28,10 +30,14 @@ def answer_question(session: DatasetSession, question: str) -> AskResponse:
 
 
 def build_unknown_answer() -> AskResponse:
+    """Возвращает стандартный fallback, когда ответ нельзя подтвердить uploaded dataset."""
+
     return AskResponse(answer=UNKNOWN_ANSWER, confidence="none", used_columns=[])
 
 
 def parse_ask_json(raw: dict[str, Any]) -> AskResponse:
+    """Проверяет JSON ответа на вопрос и нормализует confidence none в unknown fallback."""
+
     try:
         response = AskResponse.model_validate(raw)
     except ValidationError as exc:
@@ -48,5 +54,7 @@ def parse_ask_json(raw: dict[str, Any]) -> AskResponse:
 
 
 def validate_used_columns(columns: list[Any], used_columns: list[str]) -> bool:
+    """Гарантирует, что LLM ссылается только на существующие колонки dataset."""
+
     valid_column_names = {column.name for column in columns}
     return all(column in valid_column_names for column in used_columns)

@@ -25,11 +25,11 @@ export async function analyzeDataset(input: AnalyzeInput): Promise<AnalyzeRespon
   });
 
   if (!response.ok) {
-    let message = "Analysis failed. Check the dataset and try again.";
+    let message = "Не удалось проанализировать dataset. Проверьте данные и попробуйте снова.";
 
     try {
       const payload = (await response.json()) as ApiErrorResponse;
-      message = payload.error?.message ?? message;
+      message = translateApiError(payload, message);
     } catch {
       message = response.statusText || message;
     }
@@ -50,11 +50,11 @@ export async function askDataset(request: AskRequest): Promise<AskResponse> {
   });
 
   if (!response.ok) {
-    let message = "Question could not be answered.";
+    let message = "Не удалось ответить на вопрос.";
 
     try {
       const payload = (await response.json()) as ApiErrorResponse;
-      message = payload.error?.message ?? message;
+      message = translateApiError(payload, message);
     } catch {
       message = response.statusText || message;
     }
@@ -63,4 +63,25 @@ export async function askDataset(request: AskRequest): Promise<AskResponse> {
   }
 
   return response.json() as Promise<AskResponse>;
+}
+
+function translateApiError(payload: ApiErrorResponse, fallback: string): string {
+  switch (payload.error?.code) {
+    case "missing_input":
+      return "Загрузите CSV, XLS, XLSX или вставьте сырой текст.";
+    case "unsupported_file_type":
+      return "Поддерживаются только CSV, XLS и XLSX.";
+    case "file_too_large":
+      return "Файл слишком большой для MVP. Уменьшите файл и попробуйте снова.";
+    case "empty_dataset":
+      return "Dataset пустой. Загрузите другой файл или вставьте данные.";
+    case "parse_error":
+      return "Не удалось прочитать файл. Проверьте формат и структуру данных.";
+    case "session_not_found":
+      return "Сессия dataset не найдена. Загрузите данные заново.";
+    case "validation_error":
+      return "Запрос не прошел валидацию. Проверьте данные и попробуйте снова.";
+    default:
+      return payload.error?.message ?? fallback;
+  }
 }

@@ -24,12 +24,16 @@ SUPPORTED_EXTENSIONS = {".csv", ".xls", ".xlsx"}
 
 @dataclass(frozen=True)
 class ParsedInput:
+    """Результат parsing входа до нормализации: dataframe, тип источника и имя файла."""
+
     dataframe: pd.DataFrame
     source_type: SourceType
     filename: str | None = None
 
 
 def validate_file(filename: str | None, content: bytes) -> None:
+    """Проверяет расширение и размер файла до parsing, возвращая controlled errors."""
+
     if not filename:
         raise UnsupportedFileTypeError()
 
@@ -47,6 +51,8 @@ def parse_input(
     raw_text: str | None = None,
     filename: str | None = None,
 ) -> ParsedInput:
+    """Выбирает путь parsing для файла или raw text и не допускает пустой вход."""
+
     has_file = file is not None
     has_text = bool(raw_text and raw_text.strip())
 
@@ -70,6 +76,8 @@ def normalize_dataframe(
     source_type: SourceType,
     filename: str | None = None,
 ) -> NormalizedDataset:
+    """Очищает dataframe, строит profiles и compact context для дальнейшего анализа."""
+
     if df.empty:
         raise EmptyDatasetError()
 

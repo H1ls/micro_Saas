@@ -86,6 +86,13 @@
 | 7.4 | Обновить README с запуском, форматами входа, MVP-ограничениями и примерами вопросов | DONE | 2026-08-31 21:31:28 +03:00 | `6bd0966` | README описывает setup, запуск, API, LLM fallback, форматы и проверки. |
 | 7.5 | Прогнать ручную проверку: CSV, Excel, raw text, плохой файл, пустые данные, вопрос вне dataset | DONE | 2026-08-31 21:31:28 +03:00 | `6bd0966` | FastAPI TestClient проверил demo scenarios: CSV, Excel, raw text, bad file, empty input и ask outside dataset. |
 
+## Post-plan задачи из tech_dect.md
+
+| Задача | Статус | Дата завершения | Commit | Комментарий |
+|---|---|---|---|---|
+| Русские docstrings под классами и сложными функциями | DONE | 2026-08-31 22:35:05 +03:00 | `created after status update` | Добавлены docstrings к domain-моделям, public service functions, prompt builders и API handlers. |
+| Перевод сайта на русский | DONE | 2026-08-31 22:35:05 +03:00 | `created after status update` | Переведены visible UI тексты, frontend error copy и prompt-инструкции для русскоязычного narrative/ask output. |
+
 ## Проверки после завершения
 
 | Проверка | Статус | Результат |
@@ -116,3 +123,6 @@
 | Block 7 backend tests | DONE | `2026-08-31 21:31:28 +03:00`: `.venv\Scripts\python.exe -m pytest tests -q`: `27 passed`. |
 | Block 7 frontend build | DONE | `2026-08-31 21:31:28 +03:00`: `npm.cmd run build` прошел успешно. Vite warning о chunk size оставлен без изменения scope. |
 | Block 7 manual API check | DONE | `2026-08-31 21:31:28 +03:00`: CSV `200` with session and 3 charts; Excel `200`; raw text `200`; bad file `unsupported_file_type`; empty input `missing_input`; ask outside dataset returned `confidence=none`. |
+| Tech dect Python compile | DONE | `2026-08-31 22:35:05 +03:00`: `.venv\Scripts\python.exe -m compileall app tests` прошел успешно. |
+| Tech dect backend tests | DONE | `2026-08-31 22:35:05 +03:00`: `.venv\Scripts\python.exe -m pytest tests -q`: `27 passed`. |
+| Tech dect frontend build | DONE | `2026-08-31 22:35:05 +03:00`: `npm.cmd run build` прошел успешно. Vite warning о chunk size оставлен без изменения scope. |

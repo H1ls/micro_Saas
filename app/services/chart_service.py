@@ -10,6 +10,8 @@ MAX_CHART_POINTS = 12
 
 
 def recommend_fallback_charts(dataset: NormalizedDataset) -> list[ChartSpec]:
+    """Подбирает 1-3 простых fallback графика по доступным category/date/number колонкам."""
+
     category_column = _first_column_by_type(dataset, "category")
     number_column = _first_column_by_type(dataset, "number")
     date_column = _first_column_by_type(dataset, "date")
@@ -58,6 +60,8 @@ def prepare_charts(
     dataset: NormalizedDataset,
     specs: list[ChartSpec],
 ) -> list[PreparedChart]:
+    """Готовит chart data для валидных specs; если все specs плохие, использует fallback."""
+
     prepared_charts = _prepare_valid_charts(dataset, specs)
     if prepared_charts:
         return prepared_charts[:3]
@@ -98,6 +102,8 @@ def aggregate_for_bar(
     x_key: str,
     y_key: str,
 ) -> list[dict[str, Any]]:
+    """Агрегирует числовую колонку по категориям для bar chart."""
+
     totals: dict[str, float] = defaultdict(float)
 
     for row in rows:
@@ -119,6 +125,8 @@ def aggregate_for_line(
     x_key: str,
     y_key: str,
 ) -> list[dict[str, Any]]:
+    """Агрегирует числовую колонку по сортируемой оси времени/категории для line chart."""
+
     totals: dict[str, float] = defaultdict(float)
 
     for row in rows:
@@ -139,6 +147,8 @@ def aggregate_for_pie(
     x_key: str,
     y_key: str,
 ) -> list[dict[str, Any]]:
+    """Использует ту же группировку, что bar chart, для долей pie chart."""
+
     return aggregate_for_bar(rows, x_key, y_key)
 
 

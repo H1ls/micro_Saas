@@ -16,6 +16,8 @@ def analyze_dataset(
     file: UploadFile | None = File(default=None),
     raw_text: str | None = Form(default=None),
 ) -> AnalyzeResponse:
+    """Принимает файл или raw text и возвращает готовый dashboard contract."""
+
     parsed_input = parse_input(
         file=file.file if file is not None else None,
         raw_text=raw_text,

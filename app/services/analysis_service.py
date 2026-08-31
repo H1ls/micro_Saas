@@ -17,6 +17,8 @@ MAX_NARRATIVE_LENGTH = 900
 
 
 def analyze_dataset(dataset: NormalizedDataset) -> AIAnalysis:
+    """Пробует LLM analysis и при любой controlled LLM/validation ошибке возвращает fallback."""
+
     try:
         raw = complete_json(
             system_prompt=ANALYSIS_SYSTEM_PROMPT,
@@ -29,6 +31,8 @@ def analyze_dataset(dataset: NormalizedDataset) -> AIAnalysis:
 
 
 def fallback_analysis(dataset: NormalizedDataset) -> AIAnalysis:
+    """Строит deterministic narrative и chart specs без LLM, чтобы dashboard не ломался."""
+
     charts = recommend_fallback_charts(dataset)
     headline = _build_headline(dataset, charts)
     narrative = _build_narrative(dataset, charts)
@@ -42,6 +46,8 @@ def fallback_analysis(dataset: NormalizedDataset) -> AIAnalysis:
 
 
 def parse_analysis_json(raw: dict[str, Any] | str) -> AIAnalysis:
+    """Парсит LLM JSON и поддерживает старые alias поля без ослабления Pydantic validation."""
+
     if isinstance(raw, str):
         try:
             payload = json.loads(raw)
@@ -66,6 +72,8 @@ def parse_analysis_json(raw: dict[str, Any] | str) -> AIAnalysis:
 
 
 def validate_analysis(dataset: NormalizedDataset, analysis: AIAnalysis) -> AIAnalysis:
+    """Проверяет длину narrative и то, что chart specs ссылаются только на колонки dataset."""
+
     valid_columns = {column.name for column in dataset.columns}
 
     if not analysis.headline.strip() or not analysis.narrative.strip():

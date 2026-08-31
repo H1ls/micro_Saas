@@ -9,7 +9,7 @@ export function ChartGrid({ charts }: ChartGridProps) {
   if (charts.length === 0) {
     return (
       <section className="rounded-lg border border-amber-200 bg-amber-50 p-6 text-sm leading-6 text-amber-900 shadow-sm">
-        No chartable category and numeric columns were found. The insight and Ask panel can still use the uploaded dataset context.
+        Не найдены подходящие категориальные и числовые колонки для графиков. Инсайт и вопросы всё еще могут использовать контекст загруженного dataset.
       </section>
     );
   }

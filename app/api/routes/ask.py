@@ -11,5 +11,7 @@ router = APIRouter(prefix="/ask", tags=["ask"])
 
 @router.post("", response_model=AskResponse)
 def ask_dataset(request: AskRequest) -> AskResponse:
+    """Отвечает на вопрос по сохраненной dataset session через guarded chat service."""
+
     session = get_session(request.session_id)
     return answer_question(session, request.question)

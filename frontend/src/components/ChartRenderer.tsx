@@ -26,7 +26,7 @@ export function ChartRenderer({ chart }: ChartRendererProps) {
     return (
       <article className="rounded-lg border border-slate-200 bg-white p-5 shadow-sm">
         <h3 className="text-base font-semibold text-slate-950">{spec.title}</h3>
-        <p className="mt-3 text-sm text-slate-600">This chart cannot be rendered without a numeric value column.</p>
+        <p className="mt-3 text-sm text-slate-600">Этот график нельзя построить без числовой колонки значений.</p>
       </article>
     );
   }

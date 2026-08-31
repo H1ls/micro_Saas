@@ -10,6 +10,8 @@ from app.domain.errors import InvalidLLMResponseError, LLMUnavailableError
 
 
 def complete_json(system_prompt: str, user_prompt: str) -> dict[str, Any]:
+    """Выполняет OpenAI-compatible chat completion и возвращает только parsed JSON object."""
+
     settings = get_settings()
     api_key = settings.openai_api_key
 
@@ -29,7 +31,14 @@ def complete_json(system_prompt: str, user_prompt: str) -> dict[str, Any]:
                 {"role": "system", "content": system_prompt},
                 {"role": "user", "content": user_prompt},
             ],
-            response_format={"type": "json_object"},
+            response_format={
+                "type": "json_schema",
+                "json_schema": {
+                    "name": "json_response",
+                    "schema": {"type": "object"},
+                    "strict": False,
+                },
+            },
             temperature=0.2,
         )
     except OpenAIError as exc:

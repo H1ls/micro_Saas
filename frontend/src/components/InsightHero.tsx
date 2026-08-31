@@ -12,13 +12,13 @@ export function InsightHero({ analysis, dataset }: InsightHeroProps) {
     <section className="rounded-lg border border-slate-200 bg-white p-6 shadow-sm">
       <div className="flex flex-col gap-5 lg:flex-row lg:items-start lg:justify-between">
         <div className="max-w-3xl">
-          <p className="text-sm font-semibold uppercase tracking-wide text-teal-700">Main insight</p>
+          <p className="text-sm font-semibold uppercase tracking-wide text-teal-700">Главный инсайт</p>
           <h2 className="mt-2 text-2xl font-semibold leading-tight text-slate-950">{analysis.headline}</h2>
           <p className="mt-3 text-sm leading-6 text-slate-600">{analysis.narrative}</p>
         </div>
         <div className="grid min-w-[220px] grid-cols-2 gap-3">
-          <Metric icon={<Database className="h-4 w-4" />} label="Rows" value={dataset.row_count.toLocaleString()} />
-          <Metric icon={<FileText className="h-4 w-4" />} label="Columns" value={dataset.column_count.toLocaleString()} />
+          <Metric icon={<Database className="h-4 w-4" />} label="Строки" value={dataset.row_count.toLocaleString()} />
+          <Metric icon={<FileText className="h-4 w-4" />} label="Колонки" value={dataset.column_count.toLocaleString()} />
         </div>
       </div>
 

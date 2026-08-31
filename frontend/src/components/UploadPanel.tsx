@@ -35,8 +35,8 @@ export function UploadPanel({ disabled = false, onAnalyze }: UploadPanelProps) {
   return (
     <form onSubmit={handleSubmit} className="flex h-full min-h-[620px] flex-col gap-5 rounded-lg border border-slate-200 bg-white p-5 shadow-sm">
       <div>
-        <h2 className="text-xl font-semibold text-slate-950">Analyze data</h2>
-        <p className="mt-1 text-sm leading-6 text-slate-600">Upload CSV or Excel, or paste structured text.</p>
+        <h2 className="text-xl font-semibold text-slate-950">Анализ данных</h2>
+        <p className="mt-1 text-sm leading-6 text-slate-600">Загрузите CSV или Excel либо вставьте структурированный текст.</p>
       </div>
 
       <div
@@ -60,7 +60,7 @@ export function UploadPanel({ disabled = false, onAnalyze }: UploadPanelProps) {
           onChange={(event) => setFile(event.target.files?.item(0) ?? null)}
         />
         <Upload className="h-9 w-9 text-teal-700" aria-hidden="true" />
-        <p className="mt-3 text-sm font-medium text-slate-900">Drop a file here or browse</p>
+        <p className="mt-3 text-sm font-medium text-slate-900">Перетащите файл сюда или выберите его</p>
         <p className="mt-1 text-xs text-slate-500">CSV, XLS, XLSX</p>
       </div>
 
@@ -74,8 +74,8 @@ export function UploadPanel({ disabled = false, onAnalyze }: UploadPanelProps) {
             type="button"
             className="rounded-md p-1 text-slate-500 hover:bg-slate-200 hover:text-slate-800"
             onClick={() => setFile(null)}
-            aria-label="Remove selected file"
-            title="Remove selected file"
+            aria-label="Удалить выбранный файл"
+            title="Удалить выбранный файл"
           >
             <X className="h-4 w-4" aria-hidden="true" />
           </button>
@@ -83,7 +83,7 @@ export function UploadPanel({ disabled = false, onAnalyze }: UploadPanelProps) {
       )}
 
       <label className="flex min-h-0 flex-1 flex-col gap-2">
-        <span className="text-sm font-medium text-slate-800">Raw text</span>
+        <span className="text-sm font-medium text-slate-800">Сырой текст</span>
         <textarea
           value={rawText}
           onChange={(event) => setRawText(event.target.value)}
@@ -98,7 +98,7 @@ export function UploadPanel({ disabled = false, onAnalyze }: UploadPanelProps) {
         className="inline-flex h-11 items-center justify-center gap-2 rounded-md bg-slate-950 px-4 text-sm font-semibold text-white transition hover:bg-slate-800 disabled:cursor-not-allowed disabled:bg-slate-300"
       >
         {disabled ? <Loader2 className="h-4 w-4 animate-spin" aria-hidden="true" /> : <BarChartIcon />}
-        Analyze
+        Анализировать
       </button>
     </form>
   );
