@@ -1,4 +1,4 @@
-import { Loader2, Send } from "lucide-react";
+import { Loader2, MessageSquare, Send } from "lucide-react";
 import { FormEvent, useState } from "react";
 import { askDataset } from "../api/client";
 import type { AskResponse } from "../types/dashboard";
@@ -55,6 +55,12 @@ export function AskPanel({ sessionId }: AskPanelProps) {
       </div>
 
       <div className="mt-4 space-y-3">
+        {messages.length === 0 && (
+          <div className="flex items-start gap-3 rounded-md border border-slate-200 bg-slate-50 p-4 text-sm leading-6 text-slate-600">
+            <MessageSquare className="mt-0.5 h-4 w-4 shrink-0 text-teal-700" aria-hidden="true" />
+            <p>Ask a question that can be answered from the uploaded columns and rows.</p>
+          </div>
+        )}
         {messages.map((message) => (
           <div key={message.id} className="rounded-md border border-slate-200 bg-slate-50 p-4">
             <p className="text-sm font-semibold text-slate-950">{message.question}</p>
@@ -71,7 +77,11 @@ export function AskPanel({ sessionId }: AskPanelProps) {
         ))}
       </div>
 
-      {error && <p className="mt-4 rounded-md border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-700">{error}</p>}
+      {error && (
+        <p className="mt-4 rounded-md border border-red-200 bg-red-50 px-3 py-2 text-sm leading-6 text-red-700">
+          {error} Upload the dataset again if the session expired.
+        </p>
+      )}
 
       <form onSubmit={handleSubmit} className="mt-4 flex flex-col gap-3 sm:flex-row">
         <input

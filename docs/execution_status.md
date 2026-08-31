@@ -14,6 +14,7 @@
 | 4 | Frontend shell, upload UX и первый dashboard | DONE | 2026-08-31 19:19:47 +03:00 | `e53b88f` | Реализованы React/Vite frontend shell, upload UX, typed API client, session state, insight и первый `bar` chart. |
 | 5 | LLM analysis с JSON schema и guardrails | DONE | 2026-08-31 19:30:41 +03:00 | `not committed by user request` | Реализованы LLM client, prompt, JSON parsing, validation, подключение в `/api/analyze` и fallback при сбоях LLM. |
 | 6 | AI-графики, `/api/ask` и чат по данным | DONE | 2026-08-31 21:03:01 +03:00 | `966800d` | Реализованы line/pie chart data, `/api/ask`, chat service, ask prompt и AskPanel. |
+| 7 | Стабилизация, SaaS UI polish и финальная проверка | DONE | 2026-08-31 21:31:28 +03:00 | `created after status update` | Реализованы error states, SaaS UI polish, `.env.example`, README и ручная проверка MVP flows. |
 
 ## Подзадачи блока 1
 
@@ -75,6 +76,16 @@
 | 6.4 | Реализовать `POST /api/ask` | DONE | 2026-08-31 21:03:01 +03:00 | `966800d` | Вопрос по `session_id` получает ответ; отсутствующая сессия возвращает controlled error. |
 | 6.5 | Реализовать `AskPanel` и client-side chat history | DONE | 2026-08-31 21:03:01 +03:00 | `966800d` | Пользователь задает вопросы и видит историю текущей вкладки. |
 
+## Подзадачи блока 7
+
+| Подзадача | Задача | Статус | Дата завершения | Commit | Комментарий |
+|---:|---|---|---|---|---|
+| 7.1 | Довести empty/loading/error states для upload, analyze, charts и ask | DONE | 2026-08-31 21:31:28 +03:00 | `created after status update` | Уточнены empty/loading/error тексты для analyze, charts и AskPanel без новой бизнес-логики. |
+| 7.2 | Визуально отполировать layout как современный SaaS-инструмент | DONE | 2026-08-31 21:31:28 +03:00 | `created after status update` | Header/status, chart empty state и AskPanel стали аккуратнее для demo flow. |
+| 7.3 | Добавить `.env.example` без реальных ключей | DONE | 2026-08-31 21:31:28 +03:00 | `created after status update` | Добавлен template для backend, LLM и MVP limits без секретов. |
+| 7.4 | Обновить README с запуском, форматами входа, MVP-ограничениями и примерами вопросов | DONE | 2026-08-31 21:31:28 +03:00 | `created after status update` | README описывает setup, запуск, API, LLM fallback, форматы и проверки. |
+| 7.5 | Прогнать ручную проверку: CSV, Excel, raw text, плохой файл, пустые данные, вопрос вне dataset | DONE | 2026-08-31 21:31:28 +03:00 | `created after status update` | FastAPI TestClient проверил demo scenarios: CSV, Excel, raw text, bad file, empty input и ask outside dataset. |
+
 ## Проверки после завершения
 
 | Проверка | Статус | Результат |
@@ -101,3 +112,7 @@
 | Block 6 Python compile | DONE | `2026-08-31 21:03:01 +03:00`: `.venv\Scripts\python.exe -m compileall app tests` прошел успешно. |
 | Block 6 backend tests | DONE | `2026-08-31 21:03:01 +03:00`: `.venv\Scripts\python.exe -m pytest tests -q`: `27 passed`. |
 | Block 6 frontend build | DONE | `2026-08-31 21:03:01 +03:00`: `npm.cmd run build` прошел успешно. Vite warning о chunk size оставлен без изменения scope. |
+| Block 7 Python compile | DONE | `2026-08-31 21:31:28 +03:00`: `.venv\Scripts\python.exe -m compileall app tests` прошел успешно. |
+| Block 7 backend tests | DONE | `2026-08-31 21:31:28 +03:00`: `.venv\Scripts\python.exe -m pytest tests -q`: `27 passed`. |
+| Block 7 frontend build | DONE | `2026-08-31 21:31:28 +03:00`: `npm.cmd run build` прошел успешно. Vite warning о chunk size оставлен без изменения scope. |
+| Block 7 manual API check | DONE | `2026-08-31 21:31:28 +03:00`: CSV `200` with session and 3 charts; Excel `200`; raw text `200`; bad file `unsupported_file_type`; empty input `missing_input`; ask outside dataset returned `confidence=none`. |

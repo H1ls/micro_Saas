@@ -15,8 +15,8 @@ export function AppShell({ children }: PropsWithChildren) {
               <h1 className="text-lg font-semibold leading-tight text-slate-950">Dataset insight workspace</h1>
             </div>
           </div>
-          <span className="hidden rounded-md border border-slate-200 px-3 py-1 text-sm text-slate-600 sm:inline-flex">
-            MVP fallback mode
+          <span className="hidden rounded-md border border-teal-200 bg-teal-50 px-3 py-1 text-sm font-medium text-teal-800 sm:inline-flex">
+            AI with fallback
           </span>
         </div>
       </header>
