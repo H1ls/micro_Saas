@@ -22,55 +22,57 @@ export function LoadingState() {
   ];
 
   return (
-    <section className="flex h-full min-h-[620px] items-center justify-center overflow-hidden rounded-lg border border-white/55 bg-white/35 p-6 shadow-[0_28px_90px_rgba(37,58,76,0.14)] backdrop-blur-2xl">
-      <div className="grid h-full w-full max-w-[1040px] items-center gap-8 lg:grid-cols-[minmax(300px,0.9fr)_minmax(360px,1fr)]">
-        <div className="relative flex aspect-[4/3] w-full max-w-[420px] items-center justify-center justify-self-center">
-          <div className="absolute inset-8 rounded-full bg-cyan-200/20 blur-3xl" aria-hidden="true" />
+    <section className="flex h-full min-h-0 items-center justify-center overflow-hidden rounded-lg border border-white/55 bg-white/35 p-4 shadow-[0_28px_90px_rgba(37,58,76,0.14)] backdrop-blur-2xl">
+      <div className="grid h-[min(550px,100%)] w-full max-w-[940px] items-center gap-5 overflow-hidden rounded-lg border border-white/60 bg-white/42 p-5 shadow-inner shadow-white/30 backdrop-blur-xl md:grid-cols-[minmax(220px,0.78fr)_minmax(320px,1fr)]">
+        <div className="relative flex h-full min-h-0 items-center justify-center">
+          <div className="absolute inset-10 rounded-full bg-cyan-200/20 blur-3xl" aria-hidden="true" />
           <img
             src="/loading-mascot.png"
             alt="Загрузка анализа данных"
-            className="relative h-full w-full object-contain drop-shadow-[0_28px_42px_rgba(21,94,117,0.18)]"
+            className="relative max-h-[360px] w-full object-contain drop-shadow-[0_28px_42px_rgba(21,94,117,0.18)]"
           />
         </div>
 
-        <div className="min-w-0">
-          <div className="rounded-lg border border-white/60 bg-white/45 p-5 shadow-inner shadow-white/30 backdrop-blur-xl">
-            <div className="flex items-center justify-between gap-4">
-              <div>
-                <p className="text-xs font-semibold uppercase tracking-[0.18em] text-teal-700">Подготовка dashboard</p>
-                <h2 className="mt-2 text-xl font-semibold text-slate-950">Анализируем данные</h2>
-              </div>
-              <div className="h-2 w-24 overflow-hidden rounded-full bg-slate-200/70">
-                <div className="loading-progress h-full rounded-full bg-teal-500" />
-              </div>
+        <div className="flex min-h-0 flex-col justify-center">
+          <div className="flex items-center justify-between gap-4">
+            <div>
+              <p className="text-xs font-semibold uppercase tracking-[0.18em] text-teal-700">Подготовка dashboard</p>
+              <h2 className="mt-2 text-xl font-semibold text-slate-950">Анализируем данные</h2>
             </div>
-
-            <div className="mt-5 space-y-3">
-              {steps.map((step, index) => {
-                const Icon = step.icon;
-                return (
-                  <div
-                    key={step.label}
-                    className="loading-step flex items-center gap-3 rounded-lg border border-white/55 bg-white/45 px-3 py-2.5 shadow-sm"
-                    style={{ animationDelay: `${index * 900}ms` }}
-                  >
-                    <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-md bg-slate-950 text-white shadow-sm">
-                      <Icon className="h-4 w-4" aria-hidden="true" />
-                    </span>
-                    <span className="min-w-0 flex-1 text-sm font-medium text-slate-800">{step.label}</span>
-                    <Check className="h-4 w-4 shrink-0 text-teal-600" aria-hidden="true" />
-                  </div>
-                );
-              })}
+            <div className="h-2 w-24 overflow-hidden rounded-full bg-slate-200/70">
+              <div className="loading-progress h-full rounded-full bg-teal-500" />
             </div>
-
-            <div className="mt-6 grid gap-3 sm:grid-cols-3">
-              <div className="loading-skeleton h-16 rounded-lg border border-white/50 bg-white/40" />
-              <div className="loading-skeleton h-16 rounded-lg border border-white/50 bg-white/40 [animation-delay:180ms]" />
-              <div className="loading-skeleton h-16 rounded-lg border border-white/50 bg-white/40 [animation-delay:360ms]" />
-            </div>
-            <div className="loading-skeleton mt-3 h-32 rounded-lg border border-white/50 bg-white/40 [animation-delay:540ms]" />
           </div>
+
+          <p className="mt-3 max-w-xl text-sm leading-6 text-slate-600">
+            Проверяем входные данные, выделяем структуру, собираем короткую сводку и готовим безопасные данные для графиков.
+          </p>
+
+          <div className="mt-5 space-y-3">
+            {steps.map((step, index) => {
+              const Icon = step.icon;
+              return (
+                <div
+                  key={step.label}
+                  className="loading-step flex items-center gap-3 rounded-lg border border-white/55 bg-white/45 px-3 py-2.5 shadow-sm"
+                  style={{ animationDelay: `${index * 900}ms` }}
+                >
+                  <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-md bg-slate-950 text-white shadow-sm">
+                    <Icon className="h-4 w-4" aria-hidden="true" />
+                  </span>
+                  <span className="min-w-0 flex-1 text-sm font-medium text-slate-800">{step.label}</span>
+                  <Check className="h-4 w-4 shrink-0 text-teal-600" aria-hidden="true" />
+                </div>
+              );
+            })}
+          </div>
+
+          <div className="mt-5 grid gap-3 sm:grid-cols-3">
+            <div className="loading-skeleton h-14 rounded-lg border border-white/50 bg-white/40" />
+            <div className="loading-skeleton h-14 rounded-lg border border-white/50 bg-white/40 [animation-delay:180ms]" />
+            <div className="loading-skeleton h-14 rounded-lg border border-white/50 bg-white/40 [animation-delay:360ms]" />
+          </div>
+          <div className="loading-skeleton mt-3 h-20 rounded-lg border border-white/50 bg-white/40 [animation-delay:540ms]" />
         </div>
       </div>
     </section>
