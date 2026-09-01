@@ -92,7 +92,7 @@
 |---|---|---|---|---|
 | Русские docstrings под классами и сложными функциями | DONE | 2026-08-31 22:35:05 +03:00 | `fef1e03` | Добавлены docstrings к domain-моделям, public service functions, prompt builders и API handlers. |
 | Перевод сайта на русский | DONE | 2026-08-31 22:35:05 +03:00 | `fef1e03` | Переведены visible UI тексты, frontend error copy и prompt-инструкции для русскоязычного narrative/ask output. |
-| Analysis source и degraded/error UI state | DONE | 2026-09-01 10:36:03 +03:00 | `pending commit` | `/api/analyze` возвращает `analysis_source: "ai" | "fallback"`; UI показывает аккуратный fallback notice и понятный Error State без raw JSON. |
+| Analysis source и degraded/error UI state | DONE | 2026-09-01 10:36:03 +03:00 | `7d8c52b` | `/api/analyze` возвращает `analysis_source: "ai" | "fallback"`; UI показывает аккуратный fallback notice и понятный Error State без raw JSON. |
 
 ## Проверки после завершения
 
