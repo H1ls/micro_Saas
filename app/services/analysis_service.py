@@ -83,26 +83,43 @@ def validate_analysis(dataset: NormalizedDataset, analysis: AIAnalysis) -> AIAna
 
     if not analysis.headline.strip() or not analysis.insight_summary.strip() or not analysis.narrative.strip():
         raise InvalidLLMResponseError()
-    if len(analysis.headline) > MAX_HEADLINE_LENGTH:
-        raise InvalidLLMResponseError()
-    if len(analysis.insight_summary) > MAX_INSIGHT_SUMMARY_LENGTH:
-        raise InvalidLLMResponseError()
-    if len(analysis.narrative) > MAX_NARRATIVE_LENGTH:
-        raise InvalidLLMResponseError()
 
+    valid_charts: list[ChartSpec] = []
     for chart in analysis.charts:
         if chart.x_key not in valid_columns:
-            raise InvalidLLMResponseError()
+            continue
         if chart.y_key is None or chart.y_key not in valid_columns:
-            raise InvalidLLMResponseError()
+            continue
         if column_types.get(chart.y_key) != "number":
-            raise InvalidLLMResponseError()
+            continue
+
+        chart_filter = chart.filter
         if chart.filter:
             for key, expected in chart.filter.items():
                 if key not in valid_columns or not str(expected).strip():
-                    raise InvalidLLMResponseError()
+                    chart_filter = None
+                    break
 
-    return analysis
+        valid_charts.append(chart.model_copy(update={"filter": chart_filter}))
+
+    if analysis.charts and not valid_charts:
+        raise InvalidLLMResponseError()
+
+    return analysis.model_copy(
+        update={
+            "headline": _limit_text(analysis.headline, MAX_HEADLINE_LENGTH),
+            "insight_summary": _limit_text(analysis.insight_summary, MAX_INSIGHT_SUMMARY_LENGTH),
+            "narrative": _limit_text(analysis.narrative, MAX_NARRATIVE_LENGTH),
+            "charts": valid_charts,
+        }
+    )
+
+
+def _limit_text(value: str, max_length: int) -> str:
+    stripped = value.strip()
+    if len(stripped) <= max_length:
+        return stripped
+    return stripped[: max_length - 1].rstrip() + "…"
 
 
 def _build_headline(dataset: NormalizedDataset, charts: list[ChartSpec]) -> str:

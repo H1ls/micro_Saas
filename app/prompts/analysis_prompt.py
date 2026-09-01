@@ -19,7 +19,7 @@ Return only valid JSON with this shape:
       "x_key": "existing column name",
       "y_key": "existing numeric column name",
       "reason": "why this chart is useful",
-      "filter": { "group": "products", "metric_key": "orders" }
+      "filter": null
     }
   ]
 }
@@ -28,6 +28,8 @@ If there is not enough information for a claim, keep the claim out of the respon
 For this MVP, use only chart types "bar", "line", and "pie".
 You choose chart type, x_key, and y_key. Do not return chart data points or numeric series.
 If the dataset comes from extracted raw text facts, use x_key "label", y_key "metric_value", and add filter by group and metric_key when needed.
+For normal CSV/Excel tables, use filter only when every filter key is an existing dataset column.
+Do not add raw-text-only filters such as group or metric_key unless those columns exist in the dataset context.
 Write headline, insight_summary, narrative, key_observations, chart titles and reasons in Russian.
 Chart titles must clearly describe the displayed metric and grouping, for example "Выручка по регионам".
 If source data uses Russian labels or Russian column names, keep all user-facing text fully Russian.
@@ -51,5 +53,6 @@ def build_analysis_prompt(dataset: NormalizedDataset) -> str:
         "- For charts, choose only type, x_key, y_key, title, reason, and optional filter; backend will calculate chart data.\n"
         "- Chart titles must match what the chart actually displays: metric on y_key by x_key or trend over x_key.\n"
         "- If rows contain group/label/metric_key/metric_value, use filter to isolate one group and one metric_key per chart.\n"
+        "- For CSV/Excel datasets, set filter to null unless the filter uses real existing columns from the context.\n"
         "- Write all user-facing text in Russian when the dataset content is Russian; do not mix English technical keys into titles if readable labels are available."
     )

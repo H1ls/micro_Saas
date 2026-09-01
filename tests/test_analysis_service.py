@@ -85,6 +85,60 @@ def test_validate_analysis_rejects_unknown_chart_columns() -> None:
         validate_analysis(dataset, analysis)
 
 
+def test_validate_analysis_drops_invalid_chart_filter_when_columns_are_valid() -> None:
+    dataset = build_dataset()
+    analysis = parse_analysis_json(
+        {
+            "headline": "Revenue differs by segment",
+            "insight_summary": "SMB has revenue in the uploaded rows.",
+            "narrative": "The dataset shows revenue by uploaded segment values.",
+            "key_observations": ["Segment and revenue are present."],
+            "charts": [
+                {
+                    "id": "chart_1",
+                    "title": "Выручка по сегментам",
+                    "type": "bar",
+                    "x_key": "segment",
+                    "y_key": "revenue",
+                    "reason": "Compares revenue across segments.",
+                    "filter": {"group": "products", "metric_key": "revenue"},
+                }
+            ],
+        }
+    )
+
+    validated = validate_analysis(dataset, analysis)
+
+    assert validated.charts[0].filter is None
+
+
+def test_validate_analysis_trims_overlong_text_without_losing_valid_charts() -> None:
+    dataset = build_dataset()
+    analysis = parse_analysis_json(
+        {
+            "headline": "Revenue differs by segment",
+            "insight_summary": "A" * 260,
+            "narrative": "The dataset shows revenue by uploaded segment values.",
+            "key_observations": ["Segment and revenue are present."],
+            "charts": [
+                {
+                    "id": "chart_1",
+                    "title": "Выручка по сегментам",
+                    "type": "bar",
+                    "x_key": "segment",
+                    "y_key": "revenue",
+                    "reason": "Compares revenue across segments.",
+                }
+            ],
+        }
+    )
+
+    validated = validate_analysis(dataset, analysis)
+
+    assert len(validated.insight_summary) == analysis_service.MAX_INSIGHT_SUMMARY_LENGTH
+    assert validated.charts[0].id == "chart_1"
+
+
 def test_analyze_dataset_uses_llm_when_response_is_valid(monkeypatch: pytest.MonkeyPatch) -> None:
     dataset = build_dataset()
 
