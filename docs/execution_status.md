@@ -157,3 +157,4 @@
 | Latest backend regression tests | DONE | 2026-09-01 14:30:11 +03:00 | `not committed` | `.venv\Scripts\python.exe -m pytest tests -q`: `30 passed`. |
 | Latest frontend build | DONE | 2026-09-01 14:30:11 +03:00 | `not committed` | `npm.cmd run build` passed after sandbox escalation for Vite temporary config file; existing chunk-size warning remains out of scope. |
 | Loading experience with progress steps and skeleton UI | DONE | 2026-09-01 14:44:38 +03:00 | `not committed` | Existing `LoadingState` now shows the mascot, animated progress indicator, three processing steps and dashboard skeleton placeholders without backend/API changes. |
+| Chart hover, tooltip and insight expansion polish | DONE | 2026-09-01 14:51:28 +03:00 | `not committed` | Removed chart card hover lift/glow, shifted chart tooltips away from hovered marks, darkened AskPanel by about 10%, and made the main insight expandable on click for small screens. |

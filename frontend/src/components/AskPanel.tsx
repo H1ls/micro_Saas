@@ -35,8 +35,8 @@ export function AskPanel({ sessionId }: AskPanelProps) {
   }
 
   return (
-    <section className="flex min-h-0 flex-col gap-2 rounded-lg border border-white/60 bg-white/42 px-4 py-3 shadow-2xl shadow-slate-900/10 backdrop-blur-2xl">
-      <div className="min-h-[38px] overflow-hidden rounded-md border border-white/55 bg-white/32 px-3 py-2">
+    <section className="flex min-h-0 flex-col gap-2 rounded-lg border border-slate-500/18 bg-slate-950/10 px-4 py-3 shadow-2xl shadow-slate-900/14 backdrop-blur-2xl">
+      <div className="min-h-[38px] overflow-hidden rounded-md border border-white/45 bg-white/26 px-3 py-2">
         {lastAnswer ? (
           <p className="line-clamp-2 text-sm leading-5 text-slate-800">{lastAnswer.answer}</p>
         ) : (

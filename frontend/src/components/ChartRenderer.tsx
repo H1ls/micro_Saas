@@ -48,7 +48,12 @@ export function ChartRenderer({ chart, selectedLabel, onSelectLabel }: ChartRend
             <CartesianGrid stroke="rgba(100, 116, 139, 0.18)" strokeDasharray="3 8" vertical={false} />
             <XAxis dataKey={labelKey} tick={axisTick} tickLine={false} axisLine={false} interval="preserveStartEnd" />
             <YAxis tick={axisTick} tickLine={false} axisLine={false} width={50} />
-            <Tooltip content={<ChartTooltip labelKey={labelKey} valueKey={valueKey} />} cursor={{ stroke: "rgba(20, 184, 166, 0.24)", strokeWidth: 2 }} />
+            <Tooltip
+              content={<ChartTooltip labelKey={labelKey} valueKey={valueKey} />}
+              cursor={{ stroke: "rgba(20, 184, 166, 0.24)", strokeWidth: 2 }}
+              offset={28}
+              wrapperStyle={{ pointerEvents: "none" }}
+            />
             <Line
               type="monotone"
               dataKey={valueKey}
@@ -71,7 +76,11 @@ export function ChartRenderer({ chart, selectedLabel, onSelectLabel }: ChartRend
         <div className="relative h-full min-h-0">
           <ResponsiveContainer width="100%" height="100%">
             <PieChart margin={{ top: 4, right: 8, left: 8, bottom: 4 }}>
-              <Tooltip content={<ChartTooltip labelKey={labelKey} valueKey={valueKey} />} />
+              <Tooltip
+                content={<ChartTooltip labelKey={labelKey} valueKey={valueKey} />}
+                offset={34}
+                wrapperStyle={{ pointerEvents: "none" }}
+              />
               <Pie
                 data={data}
                 dataKey={valueKey}
@@ -124,7 +133,12 @@ export function ChartRenderer({ chart, selectedLabel, onSelectLabel }: ChartRend
             minTickGap={8}
           />
           <YAxis tick={axisTick} tickLine={false} axisLine={false} width={50} />
-          <Tooltip cursor={{ fill: "rgba(15, 23, 42, 0.035)" }} content={<ChartTooltip labelKey={labelKey} valueKey={valueKey} />} />
+          <Tooltip
+            cursor={{ fill: "rgba(15, 23, 42, 0.035)" }}
+            content={<ChartTooltip labelKey={labelKey} valueKey={valueKey} />}
+            offset={30}
+            wrapperStyle={{ pointerEvents: "none" }}
+          />
           <Bar dataKey={valueKey} radius={[7, 7, 7, 7]} maxBarSize={54}>
             {data.map((row, index) => {
               const label = String(row[labelKey] ?? "");
@@ -153,7 +167,7 @@ interface ChartFrameProps {
 
 function ChartFrame({ title, children }: ChartFrameProps) {
   return (
-    <article className="flex min-h-0 flex-col overflow-hidden rounded-lg border border-white/60 bg-white/46 p-4 shadow-2xl shadow-slate-950/8 backdrop-blur-2xl transition duration-300 hover:-translate-y-0.5 hover:bg-white/58">
+    <article className="flex min-h-0 flex-col overflow-hidden rounded-lg border border-white/60 bg-white/46 p-4 shadow-2xl shadow-slate-950/8 backdrop-blur-2xl">
       <div className="mb-2 shrink-0">
         <h3 className="truncate text-sm font-semibold text-slate-950">{title}</h3>
       </div>
@@ -176,7 +190,7 @@ function ChartTooltip({ active, payload, labelKey, valueKey }: ChartTooltipProps
 
   const row = payload[0].payload ?? {};
   return (
-    <div className="rounded-md border border-white/70 bg-white/88 px-3 py-2 shadow-2xl shadow-slate-950/12 backdrop-blur-2xl">
+    <div className="translate-x-4 -translate-y-3 rounded-md border border-white/70 bg-white/88 px-3 py-2 shadow-2xl shadow-slate-950/12 backdrop-blur-2xl">
       <p className="max-w-[180px] truncate text-xs font-medium text-slate-500">{String(row[labelKey] ?? "")}</p>
       <p className="mt-1 text-sm font-semibold text-slate-950">{formatCompactValue(row[valueKey])}</p>
     </div>
