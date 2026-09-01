@@ -13,6 +13,7 @@ from app.services.llm_client import complete_json
 
 
 MAX_HEADLINE_LENGTH = 140
+MAX_INSIGHT_SUMMARY_LENGTH = 220
 MAX_NARRATIVE_LENGTH = 900
 
 
@@ -39,6 +40,7 @@ def fallback_analysis(dataset: NormalizedDataset) -> AIAnalysis:
 
     return AIAnalysis(
         headline=headline,
+        insight_summary=_build_insight_summary(dataset, charts),
         narrative=narrative,
         key_observations=_build_observations(dataset, charts),
         charts=charts,
@@ -64,6 +66,8 @@ def parse_analysis_json(raw: dict[str, Any] | str) -> AIAnalysis:
         normalized_payload["key_observations"] = normalized_payload["observations"]
     if "charts" not in normalized_payload and "chart_specs" in normalized_payload:
         normalized_payload["charts"] = normalized_payload["chart_specs"]
+    if "insight_summary" not in normalized_payload and "narrative" in normalized_payload:
+        normalized_payload["insight_summary"] = str(normalized_payload["narrative"])[:MAX_INSIGHT_SUMMARY_LENGTH]
 
     try:
         return AIAnalysis.model_validate(normalized_payload)
@@ -76,9 +80,11 @@ def validate_analysis(dataset: NormalizedDataset, analysis: AIAnalysis) -> AIAna
 
     valid_columns = {column.name for column in dataset.columns}
 
-    if not analysis.headline.strip() or not analysis.narrative.strip():
+    if not analysis.headline.strip() or not analysis.insight_summary.strip() or not analysis.narrative.strip():
         raise InvalidLLMResponseError()
     if len(analysis.headline) > MAX_HEADLINE_LENGTH:
+        raise InvalidLLMResponseError()
+    if len(analysis.insight_summary) > MAX_INSIGHT_SUMMARY_LENGTH:
         raise InvalidLLMResponseError()
     if len(analysis.narrative) > MAX_NARRATIVE_LENGTH:
         raise InvalidLLMResponseError()
@@ -111,6 +117,19 @@ def _build_narrative(dataset: NormalizedDataset, charts: list[ChartSpec]) -> str
             f"`{chart.x_key}` categories."
         )
     return f"{base} There is not enough category and numeric structure to build a fallback chart."
+
+
+def _build_insight_summary(dataset: NormalizedDataset, charts: list[ChartSpec]) -> str:
+    if charts:
+        chart = charts[0]
+        return (
+            f"Короткая сводка: `{chart.y_key}` лучше всего смотреть по `{chart.x_key}`; "
+            f"dashboard построен по {dataset.row_count} строкам dataset."
+        )
+    return (
+        f"Короткая сводка: в dataset {dataset.row_count} строк и {dataset.column_count} колонок, "
+        "но не хватает пары category + number для графиков."
+    )
 
 
 def _build_observations(dataset: NormalizedDataset, charts: list[ChartSpec]) -> list[str]:

@@ -49,6 +49,7 @@ def _dataset() -> NormalizedDataset:
 def _analysis() -> AIAnalysis:
     return AIAnalysis(
         headline="Dataset ready",
+        insight_summary="Dataset ready.",
         narrative="Dataset ready.",
         key_observations=[],
         charts=[],

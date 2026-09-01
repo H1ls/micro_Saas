@@ -34,6 +34,7 @@ export interface PreparedChart {
 
 export interface AIAnalysis {
   headline: string;
+  insight_summary: string;
   narrative: string;
   key_observations: string[];
   charts: ChartSpec[];

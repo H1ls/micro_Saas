@@ -11,7 +11,7 @@ def test_ask_returns_answer_for_existing_session(monkeypatch) -> None:
     clear_sessions()
     session = create_session(
         _dataset(),
-        AIAnalysis(headline="Ready", narrative="Ready.", key_observations=[], charts=[]),
+        AIAnalysis(headline="Ready", insight_summary="Ready.", narrative="Ready.", key_observations=[], charts=[]),
         "ai",
         [],
     )

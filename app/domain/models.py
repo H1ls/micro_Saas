@@ -58,6 +58,7 @@ class AIAnalysis(BaseModel):
     """Структурированный narrative dashboard, прошедший Pydantic validation."""
 
     headline: str
+    insight_summary: str
     narrative: str
     key_observations: list[str]
     charts: list[ChartSpec]

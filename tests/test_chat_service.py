@@ -85,7 +85,7 @@ def _session() -> DatasetSession:
     return DatasetSession(
         id="session_1",
         dataset=dataset,
-        analysis=AIAnalysis(headline="Ready", narrative="Ready.", key_observations=[], charts=[]),
+        analysis=AIAnalysis(headline="Ready", insight_summary="Ready.", narrative="Ready.", key_observations=[], charts=[]),
         analysis_source="ai",
         charts=[],
         created_at="2026-08-31T16:00:00+00:00",

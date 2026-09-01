@@ -32,6 +32,7 @@ def test_fallback_analysis_returns_structured_analysis() -> None:
     analysis = fallback_analysis(dataset)
 
     assert analysis.headline
+    assert analysis.insight_summary
     assert analysis.narrative
     assert analysis.key_observations
     assert len(analysis.charts) == 2
@@ -92,6 +93,7 @@ def test_analyze_dataset_uses_llm_when_response_is_valid(monkeypatch: pytest.Mon
         assert dataset.compact_context in user_prompt
         return {
             "headline": "Revenue differs by segment",
+            "insight_summary": "Enterprise is the key revenue segment in the uploaded rows.",
             "narrative": "The uploaded dataset contains segment and revenue columns.",
             "key_observations": ["The response uses only uploaded columns."],
             "charts": [
@@ -112,6 +114,7 @@ def test_analyze_dataset_uses_llm_when_response_is_valid(monkeypatch: pytest.Mon
 
     assert result.source == "ai"
     assert result.analysis.headline == "Revenue differs by segment"
+    assert result.analysis.insight_summary == "Enterprise is the key revenue segment in the uploaded rows."
     assert result.analysis.charts[0].id == "chart_1"
 
 
