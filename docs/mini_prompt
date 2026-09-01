@@ -1,0 +1,11 @@
+Изучи `docs/execution_plan.md` и при необходимости сверяйся с `docs/mvp_ai_dashboard_architecture_48h.md`.
+
+Измени только Block 3 в `execution_plan.md`:
+
+* явно укажи, что deterministic analysis в Block 3 — это постоянный fallback, а не временная заглушка;
+* укажи, что в Block 5 будет добавлен основной LLM-путь;
+* если LLM недоступен или его ответ не проходит validation, используется fallback из Block 3.
+
+Больше ничего не меняй.
+
+После правки покажи diff.

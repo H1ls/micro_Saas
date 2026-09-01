@@ -79,6 +79,7 @@ def validate_analysis(dataset: NormalizedDataset, analysis: AIAnalysis) -> AIAna
     """Проверяет длину narrative и то, что chart specs ссылаются только на колонки dataset."""
 
     valid_columns = {column.name for column in dataset.columns}
+    column_types = {column.name: column.type for column in dataset.columns}
 
     if not analysis.headline.strip() or not analysis.insight_summary.strip() or not analysis.narrative.strip():
         raise InvalidLLMResponseError()
@@ -94,6 +95,12 @@ def validate_analysis(dataset: NormalizedDataset, analysis: AIAnalysis) -> AIAna
             raise InvalidLLMResponseError()
         if chart.y_key is None or chart.y_key not in valid_columns:
             raise InvalidLLMResponseError()
+        if column_types.get(chart.y_key) != "number":
+            raise InvalidLLMResponseError()
+        if chart.filter:
+            for key, expected in chart.filter.items():
+                if key not in valid_columns or not str(expected).strip():
+                    raise InvalidLLMResponseError()
 
     return analysis
 

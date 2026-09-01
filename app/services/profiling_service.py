@@ -67,6 +67,13 @@ def build_compact_context(dataset: NormalizedDataset) -> str:
         "date_summary": date_summary,
         "sample_rows": dataset.rows[:MAX_CONTEXT_SAMPLE_ROWS],
     }
+    if dataset.raw_text_extraction:
+        context["structured_facts"] = [
+            fact.model_dump() for fact in dataset.raw_text_extraction.facts
+        ]
+        context["metrics"] = [
+            metric.model_dump() for metric in dataset.raw_text_extraction.metrics
+        ]
     return json.dumps(context, ensure_ascii=False, default=str)
 
 

@@ -25,6 +25,7 @@ export interface ChartSpec {
   x_key: string;
   y_key: string | null;
   reason: string;
+  filter?: Record<string, string> | null;
 }
 
 export interface PreparedChart {

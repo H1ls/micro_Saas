@@ -95,6 +95,7 @@
 | Analysis source и degraded/error UI state | DONE | 2026-09-01 10:36:03 +03:00 | `7d8c52b` | `/api/analyze` возвращает `analysis_source: "ai" | "fallback"`; UI показывает аккуратный fallback notice и понятный Error State без raw JSON. |
 | One-screen glassmorphism dashboard и LLM insight summary | DONE | 2026-09-01 10:56:37 +03:00 | `21afadd` | UploadPanel сворачивается в левый нижний угол после Analyze; dashboard помещается в один экран; `AIAnalysis` содержит короткую `insight_summary` для Главного инсайта. |
 | Fallback empty state without charts | DONE | 2026-09-01 11:28:05 +03:00 | `9174bb6` | При `analysis_source: "fallback"` frontend скрывает графики и показывает glassmorphism Empty State с маскотом, описанием ошибки и действиями retry/upload. |
+| Raw text LLM extraction для графиков | DONE | 2026-09-01 12:17:48 +03:00 | `not committed` | Plain `raw_text` перед нормализацией может проходить LLM extraction в структурированные facts/metrics; backend валидирует `ChartSpec.filter`, существование ключей и числовой `y_key`, а chart data считает сам. |
 
 ## Проверки после завершения
 
@@ -136,3 +137,22 @@
 | One-screen glassmorphism backend tests | DONE | `2026-09-01 10:56:37 +03:00`: `.venv\Scripts\python.exe -m pytest tests -q`: `27 passed`. |
 | One-screen glassmorphism frontend build | DONE | `2026-09-01 10:56:37 +03:00`: `npm.cmd run build` прошел успешно после запуска с правами на временный файл Vite config; Vite warning о chunk size оставлен без изменения scope. |
 | Fallback empty state frontend build | DONE | `2026-09-01 11:28:05 +03:00`: `npm.cmd run build` прошел успешно после запуска с правами на временный файл Vite config; Vite warning о chunk size оставлен без изменения scope. |
+| Raw text LLM extraction Python compile | DONE | `2026-09-01 12:17:48 +03:00`: `.venv\Scripts\python.exe -m compileall app tests` прошел успешно. |
+| Raw text LLM extraction backend tests | DONE | `2026-09-01 12:17:48 +03:00`: `.venv\Scripts\python.exe -m pytest tests -q`: `30 passed`. |
+| Raw text LLM extraction frontend build | DONE | `2026-09-01 12:17:48 +03:00`: `npm.cmd run build` прошел успешно после запуска с правами на временный файл Vite config; Vite warning о chunk size оставлен без изменения scope. |
+
+## Additional post-plan status
+
+| Task | Status | Date | Commit | Comment |
+|---|---|---|---|---|
+| Raw text one-LLM extraction contract | DONE | 2026-09-01 12:37:19 +03:00 | `not committed` | Plain raw text now uses one LLM request with `system_prompt + raw_text + strict JSON schema`; backend validates `structured_facts`/`metrics`, builds analysis/charts itself, and `/api/ask` receives structured facts/metrics through compact context instead of raw text. |
+| Raw text one-LLM Python compile | DONE | 2026-09-01 12:37:19 +03:00 | `not committed` | `.venv\Scripts\python.exe -m compileall app tests` passed. |
+| Raw text one-LLM backend tests | DONE | 2026-09-01 12:37:19 +03:00 | `not committed` | `.venv\Scripts\python.exe -m pytest tests -q`: `30 passed`. |
+| Raw text one-LLM frontend build | DONE | 2026-09-01 12:37:19 +03:00 | `not committed` | `npm.cmd run build` passed after sandbox escalation for Vite temporary config file; existing chunk-size warning remains out of scope. |
+| Loading mascot Lottie and transparent PNG | DONE | 2026-09-01 14:30:11 +03:00 | `not committed` | Added `frontend/public/loading-mascot.json` as valid Bodymovin/Lottie JSON: 60 FPS, 8s loop, `assets: []`, separate pie-sector shape layers; regenerated `loading-mascot.png` from `load.png` and verified real alpha (`color_type=6`). |
+| Main input screen and header navigation polish | DONE | 2026-09-01 14:30:11 +03:00 | `not committed` | Main idle screen now uses a wide input layout: file upload panel on the left and tall raw text panel on the right with the Analyze button below; header brand area resets to the home state; `AI с fallback` header badge removed. |
+| Ask answer placement | DONE | 2026-09-01 14:30:11 +03:00 | `not committed` | `AskPanel` now renders the latest LLM answer in a compact glass block directly above the question input without adding page scroll or full chat history. |
+| Graphite palette and premium chart polish | DONE | 2026-09-01 14:30:11 +03:00 | `not committed` | UI palette moved toward graphite/slate/white with muted teal and small amber/coral accents; charts now avoid legends, use custom glass tooltips, ghost gridlines, direct labels, rounded bars, donut center metric, muted inactive marks, and linked hover highlight by label. |
+| Chart rendering and raw text chart title fixes | DONE | 2026-09-01 14:30:11 +03:00 | `not committed` | Fixed Recharts parent height by adding `h-full` around the chart grid; removed chart `reason` from UI; raw text extraction prompt/model now support `group_label` and `metric_label`, so titles can be human-readable, e.g. `заказы по товарам` instead of `orders по products, orders`. |
+| Latest backend regression tests | DONE | 2026-09-01 14:30:11 +03:00 | `not committed` | `.venv\Scripts\python.exe -m pytest tests -q`: `30 passed`. |
+| Latest frontend build | DONE | 2026-09-01 14:30:11 +03:00 | `not committed` | `npm.cmd run build` passed after sandbox escalation for Vite temporary config file; existing chunk-size warning remains out of scope. |

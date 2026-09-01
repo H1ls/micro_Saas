@@ -15,7 +15,7 @@ from app.domain.errors import (
     MissingInputError,
     UnsupportedFileTypeError,
 )
-from app.domain.models import NormalizedDataset, SourceType
+from app.domain.models import NormalizedDataset, RawTextExtraction, SourceType
 from app.services.profiling_service import build_compact_context, infer_column_profiles
 from app.utils.dataframe import dataframe_to_rows, normalize_dataframe_columns
 
@@ -75,6 +75,8 @@ def normalize_dataframe(
     df: pd.DataFrame,
     source_type: SourceType,
     filename: str | None = None,
+    raw_text: str | None = None,
+    raw_text_extraction: RawTextExtraction | None = None,
 ) -> NormalizedDataset:
     """Очищает dataframe, строит profiles и compact context для дальнейшего анализа."""
 
@@ -91,6 +93,8 @@ def normalize_dataframe(
     dataset = NormalizedDataset(
         source_type=source_type,
         filename=filename,
+        raw_text=raw_text if source_type == "text" else None,
+        raw_text_extraction=raw_text_extraction if source_type == "text" else None,
         columns=columns,
         rows=rows,
         row_count=len(rows),

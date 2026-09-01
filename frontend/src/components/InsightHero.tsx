@@ -7,8 +7,8 @@ interface InsightHeroProps {
 
 export function InsightHero({ analysis }: InsightHeroProps) {
   return (
-    <section className="insight-slide flex min-h-0 items-center gap-4 overflow-hidden rounded-lg border border-white/60 bg-white/42 px-5 py-4 shadow-2xl shadow-slate-900/10 backdrop-blur-2xl">
-      <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-md bg-teal-600/90 text-white shadow-lg shadow-teal-900/10">
+    <section className="insight-slide flex min-h-0 items-center gap-4 overflow-hidden rounded-lg border border-white/60 bg-white/48 px-5 py-4 shadow-2xl shadow-slate-950/8 backdrop-blur-2xl">
+      <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-md bg-slate-900 text-white shadow-lg shadow-slate-950/10">
         <Sparkles className="h-5 w-5" aria-hidden="true" />
       </div>
       <div className="min-w-0 flex-1">

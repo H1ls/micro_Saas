@@ -7,7 +7,7 @@
 1. `docs/mvp_ai_dashboard_architecture_48h.md`
 2. `docs/execution_plan.md`
 3. `docs/ai_execution_rules.md`
-
+4. `docs/execution_status.md.`
 ---
 
 # 1. Приоритет документов

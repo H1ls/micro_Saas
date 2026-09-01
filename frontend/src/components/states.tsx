@@ -1,4 +1,4 @@
-import { AlertTriangle, BarChart3, Loader2, RotateCcw, Upload } from "lucide-react";
+import { AlertTriangle, BarChart3, RotateCcw, Upload } from "lucide-react";
 
 export function EmptyState() {
   return (
@@ -16,13 +16,42 @@ export function EmptyState() {
 
 export function LoadingState() {
   return (
-    <section className="flex h-full min-h-[620px] items-center justify-center rounded-lg border border-slate-200 bg-white p-6 shadow-sm">
-      <div className="text-center">
-        <Loader2 className="mx-auto h-10 w-10 animate-spin text-teal-700" aria-hidden="true" />
-        <h2 className="mt-4 text-xl font-semibold text-slate-950">Анализируем dataset</h2>
-        <p className="mt-2 text-sm text-slate-600">
-          Готовим AI narrative, безопасные данные для графиков и контекст сессии.
-        </p>
+    <section className="flex h-full min-h-[620px] items-center justify-center overflow-hidden rounded-lg border border-white/55 bg-white/35 p-6 shadow-[0_28px_90px_rgba(37,58,76,0.14)] backdrop-blur-2xl">
+      <div className="relative flex aspect-[4/3] w-full max-w-[420px] items-center justify-center">
+        <div className="absolute inset-8 rounded-full bg-cyan-200/20 blur-3xl" aria-hidden="true" />
+        <img
+          src="/loading-mascot.png"
+          alt="Загрузка анализа данных"
+          className="relative h-full w-full object-contain drop-shadow-[0_28px_42px_rgba(21,94,117,0.18)]"
+        />
+        <svg className="pointer-events-none absolute inset-0 h-full w-full" viewBox="0 0 420 320" aria-hidden="true">
+          <defs>
+            <filter id="loadingPieGlow" x="-35%" y="-35%" width="170%" height="170%">
+              <feGaussianBlur stdDeviation="3.2" result="blur" />
+              <feMerge>
+                <feMergeNode in="blur" />
+                <feMergeNode in="SourceGraphic" />
+              </feMerge>
+            </filter>
+          </defs>
+          <g filter="url(#loadingPieGlow)" opacity="0.82">
+            <path d="M298 178 L298 111 A67 67 0 0 1 356 145 Z" fill="#ff766d" fillOpacity="0.42" stroke="#ff8b82" strokeWidth="3">
+              <animateTransform attributeName="transform" type="translate" values="34 -18;34 -18;0 0;0 0;34 -18" keyTimes="0;0.12;0.34;0.74;1" dur="2s" repeatCount="indefinite" />
+            </path>
+            <path d="M298 178 L356 145 A67 67 0 0 1 329 235 Z" fill="#3ba7ff" fillOpacity="0.42" stroke="#62c7ff" strokeWidth="3">
+              <animateTransform attributeName="transform" type="translate" values="42 32;42 32;42 32;0 0;42 32" keyTimes="0;0.25;0.42;0.62;1" dur="2s" repeatCount="indefinite" />
+            </path>
+            <path d="M298 178 L329 235 A67 67 0 0 1 242 216 Z" fill="#ffd05a" fillOpacity="0.46" stroke="#ffd76e" strokeWidth="3">
+              <animateTransform attributeName="transform" type="translate" values="-30 38;-30 38;-30 38;0 0;-30 38" keyTimes="0;0.42;0.55;0.72;1" dur="2s" repeatCount="indefinite" />
+            </path>
+            <path d="M298 178 L242 216 A67 67 0 0 1 298 111 Z" fill="#23d7d0" fillOpacity="0.38" stroke="#67fff5" strokeWidth="3">
+              <animate attributeName="opacity" values="0.45;0.76;0.45" dur="2s" repeatCount="indefinite" />
+            </path>
+            <circle cx="298" cy="178" r="68" fill="none" stroke="#ffffff" strokeOpacity="0.55" strokeWidth="2">
+              <animate attributeName="opacity" values="0;0;0.8;0" keyTimes="0;0.62;0.76;1" dur="2s" repeatCount="indefinite" />
+            </circle>
+          </g>
+        </svg>
       </div>
     </section>
   );
@@ -62,7 +91,6 @@ export function FallbackDataState({ onRetry, onUpload }: FallbackDataStateProps)
           />
         </div>
         <div className="flex min-h-0 flex-col justify-center">
-          <p className="text-xs font-semibold uppercase text-teal-700">Fallback mode</p>
           <h2 className="mt-2 text-2xl font-semibold text-slate-950">ИИ не собрал надежные графики</h2>
           <p className="mt-3 max-w-xl text-sm leading-6 text-slate-600">
             Данные загружены, но AI не вернул валидную структуру для dashboard или ответ не прошел проверку. Чтобы не
@@ -117,7 +145,7 @@ export function ErrorState({ message, onRetry }: ErrorStateProps) {
             className="inline-flex h-10 items-center justify-center gap-2 rounded-md border border-slate-300 px-4 text-sm font-semibold text-slate-800 transition hover:bg-slate-50"
           >
             <RotateCcw className="h-4 w-4" aria-hidden="true" />
-            Retry
+            Повторить
           </button>
           <button
             type="button"
@@ -125,7 +153,7 @@ export function ErrorState({ message, onRetry }: ErrorStateProps) {
             className="inline-flex h-10 items-center justify-center gap-2 rounded-md bg-teal-600 px-4 text-sm font-semibold text-white transition hover:bg-teal-700"
           >
             <Upload className="h-4 w-4" aria-hidden="true" />
-            Try another file
+            Загрузить другой файл
           </button>
         </div>
       </div>

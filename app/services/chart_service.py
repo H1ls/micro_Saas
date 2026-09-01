@@ -75,19 +75,25 @@ def _prepare_valid_charts(
 ) -> list[PreparedChart]:
     prepared_charts: list[PreparedChart] = []
     valid_columns = {column.name for column in dataset.columns}
+    column_types = {column.name: column.type for column in dataset.columns}
 
     for spec in specs:
         if spec.y_key is None:
             continue
         if spec.x_key not in valid_columns or spec.y_key not in valid_columns:
             continue
+        if column_types.get(spec.y_key) != "number":
+            continue
+        rows = _filter_rows(dataset.rows, spec.filter)
+        if not rows:
+            continue
 
         if spec.type == "bar":
-            data = aggregate_for_bar(dataset.rows, spec.x_key, spec.y_key)
+            data = aggregate_for_bar(rows, spec.x_key, spec.y_key)
         elif spec.type == "line":
-            data = aggregate_for_line(dataset.rows, spec.x_key, spec.y_key)
+            data = aggregate_for_line(rows, spec.x_key, spec.y_key)
         elif spec.type == "pie":
-            data = aggregate_for_pie(dataset.rows, spec.x_key, spec.y_key)
+            data = aggregate_for_pie(rows, spec.x_key, spec.y_key)
         else:
             continue
 
@@ -95,6 +101,17 @@ def _prepare_valid_charts(
             prepared_charts.append(PreparedChart(spec=spec, data=data))
 
     return prepared_charts
+
+
+def _filter_rows(rows: list[dict[str, Any]], filters: dict[str, str] | None) -> list[dict[str, Any]]:
+    if not filters:
+        return rows
+
+    filtered_rows = []
+    for row in rows:
+        if all(str(row.get(key)) == expected for key, expected in filters.items()):
+            filtered_rows.append(row)
+    return filtered_rows
 
 
 def aggregate_for_bar(

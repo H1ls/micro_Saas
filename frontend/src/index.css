@@ -32,6 +32,14 @@ textarea {
   animation: insight-slide 620ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
 }
 
+.charts-rise {
+  animation: charts-rise 720ms cubic-bezier(0.2, 0.8, 0.2, 1) 120ms both;
+}
+
+.upload-collapse-up {
+  animation: upload-collapse-up 520ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
 @keyframes dashboard-enter {
   from {
     opacity: 0;
@@ -51,5 +59,27 @@ textarea {
   to {
     opacity: 1;
     transform: translateY(0);
+  }
+}
+
+@keyframes charts-rise {
+  from {
+    opacity: 0;
+    transform: translateY(34px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes upload-collapse-up {
+  from {
+    opacity: 0.72;
+    transform: translateY(24px) scale(0.985);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
   }
 }
