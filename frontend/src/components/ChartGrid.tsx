@@ -1,5 +1,6 @@
 import type { PreparedChart } from "../types/dashboard";
 import { ChartRenderer } from "./ChartRenderer";
+import { MascotEmptyPanel } from "./states";
 
 interface ChartGridProps {
   charts: PreparedChart[];
@@ -10,9 +11,10 @@ interface ChartGridProps {
 export function ChartGrid({ charts, selectedLabel, onSelectLabel }: ChartGridProps) {
   if (charts.length === 0) {
     return (
-      <section className="flex min-h-0 items-center justify-center rounded-lg border border-amber-200/70 bg-amber-50/50 p-6 text-center text-sm leading-6 text-amber-950 shadow-xl shadow-amber-950/5 backdrop-blur-2xl">
-        Не найдены подходящие категориальные и числовые колонки для графиков. Инсайт и вопросы все еще могут использовать контекст загруженного dataset.
-      </section>
+      <MascotEmptyPanel
+        title="Графики не построены"
+        message="AI не нашел надежную пару категориальной и числовой колонки для визуализации. Инсайт и вопросы могут использовать загруженный dataset, но графики скрыты."
+      />
     );
   }
 

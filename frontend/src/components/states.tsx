@@ -1,15 +1,72 @@
-import { AlertTriangle, BarChart3, Check, Database, FileSearch, RotateCcw, Sparkles, Upload } from "lucide-react";
+import { AlertTriangle, Check, Database, FileSearch, RotateCcw, Sparkles, Upload } from "lucide-react";
 import type { TranslatedApiError } from "../api/client";
 
 export function EmptyState() {
   return (
-    <section className="flex h-full min-h-[620px] items-center justify-center rounded-lg border border-slate-200 bg-white p-6 shadow-sm">
-      <div className="max-w-md text-center">
-        <BarChart3 className="mx-auto h-12 w-12 text-teal-700" aria-hidden="true" />
-        <h2 className="mt-4 text-xl font-semibold text-slate-950">Загрузите данные, чтобы собрать dashboard</h2>
-        <p className="mt-2 text-sm leading-6 text-slate-600">
-          Загрузите CSV, Excel или сырой текст, чтобы получить инсайт, графики и ответы только по dataset.
-        </p>
+    <MascotEmptyPanel
+      title="Загрузите данные, чтобы собрать dashboard"
+      message="Загрузите CSV, Excel или сырой текст, чтобы получить инсайт, графики и ответы только по dataset."
+      compact={false}
+    />
+  );
+}
+
+interface MascotEmptyPanelProps {
+  title: string;
+  message: string;
+  secondaryMessage?: string;
+  onRetry?: () => void;
+  onUpload?: () => void;
+  compact?: boolean;
+}
+
+export function MascotEmptyPanel({
+  title,
+  message,
+  secondaryMessage,
+  onRetry,
+  onUpload,
+  compact = true,
+}: MascotEmptyPanelProps) {
+  return (
+    <section className="min-h-0 overflow-hidden rounded-lg border border-white/60 bg-white/45 p-4 shadow-[0_24px_80px_rgba(35,54,73,0.14)] backdrop-blur-2xl">
+      <div className="grid h-full min-h-0 items-center gap-5 rounded-lg border border-white/50 bg-white/35 p-4 shadow-inner shadow-white/30 md:grid-cols-[minmax(130px,0.55fr)_minmax(180px,1fr)]">
+        <div className="flex h-full min-h-0 items-center justify-center">
+          <img
+            src="/fallback-empty-state.png"
+            alt=""
+            className={`${compact ? "max-h-44 max-w-[220px]" : "max-h-full max-w-[360px]"} w-full object-contain drop-shadow-[0_24px_36px_rgba(32,72,88,0.18)]`}
+          />
+        </div>
+        <div className="flex min-h-0 flex-col justify-center">
+          <h2 className={`${compact ? "text-lg" : "text-2xl"} font-semibold text-slate-950`}>{title}</h2>
+          <p className="mt-3 max-w-xl text-sm leading-6 text-slate-600">{message}</p>
+          {secondaryMessage && <p className="mt-2 max-w-xl text-sm leading-6 text-slate-500">{secondaryMessage}</p>}
+          {(onRetry || onUpload) && (
+            <div className="mt-5 flex flex-col gap-3 sm:flex-row">
+              {onRetry && (
+                <button
+                  type="button"
+                  onClick={onRetry}
+                  className="inline-flex h-11 items-center justify-center gap-2 rounded-md border border-white/70 bg-white/55 px-4 text-sm font-semibold text-slate-800 shadow-sm transition hover:-translate-y-0.5 hover:bg-white/80"
+                >
+                  <RotateCcw className="h-4 w-4" aria-hidden="true" />
+                  Попробовать снова
+                </button>
+              )}
+              {onUpload && (
+                <button
+                  type="button"
+                  onClick={onUpload}
+                  className="inline-flex h-11 items-center justify-center gap-2 rounded-md bg-teal-600 px-4 text-sm font-semibold text-white shadow-lg shadow-teal-900/15 transition hover:-translate-y-0.5 hover:bg-teal-700"
+                >
+                  <Upload className="h-4 w-4" aria-hidden="true" />
+                  Загрузить файл
+                </button>
+              )}
+            </div>
+          )}
+        </div>
       </div>
     </section>
   );
@@ -104,45 +161,14 @@ interface FallbackDataStateProps {
 
 export function FallbackDataState({ onRetry, onUpload }: FallbackDataStateProps) {
   return (
-    <section className="min-h-0 overflow-hidden rounded-lg border border-white/60 bg-white/45 p-4 shadow-[0_24px_80px_rgba(35,54,73,0.14)] backdrop-blur-2xl">
-      <div className="grid h-full min-h-0 items-center gap-6 rounded-lg border border-white/50 bg-white/35 p-5 shadow-inner shadow-white/30 lg:grid-cols-[minmax(220px,0.72fr)_minmax(280px,1fr)]">
-        <div className="flex h-full min-h-0 items-center justify-center">
-          <img
-            src="/fallback-empty-state.png"
-            alt=""
-            className="max-h-full w-full max-w-[360px] object-contain drop-shadow-[0_24px_36px_rgba(32,72,88,0.18)]"
-          />
-        </div>
-        <div className="flex min-h-0 flex-col justify-center">
-          <h2 className="mt-2 text-2xl font-semibold text-slate-950">ИИ не собрал надежные графики</h2>
-          <p className="mt-3 max-w-xl text-sm leading-6 text-slate-600">
-            Данные загружены, но AI не вернул валидную структуру для dashboard или ответ не прошел проверку. Чтобы не
-            показывать сомнительную визуализацию, графики скрыты.
-          </p>
-          <p className="mt-2 max-w-xl text-sm leading-6 text-slate-500">
-            Можно повторить анализ с теми же данными или загрузить другой файл.
-          </p>
-          <div className="mt-6 flex flex-col gap-3 sm:flex-row">
-            <button
-              type="button"
-              onClick={onRetry}
-              className="inline-flex h-11 items-center justify-center gap-2 rounded-md border border-white/70 bg-white/55 px-4 text-sm font-semibold text-slate-800 shadow-sm transition hover:-translate-y-0.5 hover:bg-white/80"
-            >
-              <RotateCcw className="h-4 w-4" aria-hidden="true" />
-              Попробовать снова
-            </button>
-            <button
-              type="button"
-              onClick={onUpload}
-              className="inline-flex h-11 items-center justify-center gap-2 rounded-md bg-teal-600 px-4 text-sm font-semibold text-white shadow-lg shadow-teal-900/15 transition hover:-translate-y-0.5 hover:bg-teal-700"
-            >
-              <Upload className="h-4 w-4" aria-hidden="true" />
-              Загрузить файл
-            </button>
-          </div>
-        </div>
-      </div>
-    </section>
+    <MascotEmptyPanel
+      title="ИИ не собрал надежные графики"
+      message="Данные загружены, но AI не вернул валидную структуру для dashboard или ответ не прошел проверку. Чтобы не показывать сомнительную визуализацию, графики скрыты."
+      secondaryMessage="Можно повторить анализ с теми же данными или загрузить другой файл."
+      onRetry={onRetry}
+      onUpload={onUpload}
+      compact={false}
+    />
   );
 }
 
@@ -195,33 +221,13 @@ export function ErrorState({ error, onRetry, onUpload }: ErrorStateProps) {
   }
 
   return (
-    <section className="flex h-full min-h-[620px] items-center justify-center rounded-lg border border-red-200 bg-white p-6 shadow-sm">
-      <div className="max-w-md text-center">
-        <AlertTriangle className="mx-auto h-10 w-10 text-red-600" aria-hidden="true" />
-        <h2 className="mt-4 text-xl font-semibold text-slate-950">{error.title}</h2>
-        <p className="mt-2 text-sm leading-6 text-slate-600">{error.message}</p>
-        <p className="mt-2 text-xs leading-5 text-slate-500">
-          Внутренние детали ошибки скрыты. Проверьте данные и попробуйте снова.
-        </p>
-        <div className="mt-5 flex flex-col justify-center gap-3 sm:flex-row">
-          <button
-            type="button"
-            onClick={onRetry}
-            className="inline-flex h-10 items-center justify-center gap-2 rounded-md border border-slate-300 px-4 text-sm font-semibold text-slate-800 transition hover:bg-slate-50"
-          >
-            <RotateCcw className="h-4 w-4" aria-hidden="true" />
-            Попробовать снова
-          </button>
-          <button
-            type="button"
-            onClick={onUpload}
-            className="inline-flex h-10 items-center justify-center gap-2 rounded-md bg-teal-600 px-4 text-sm font-semibold text-white transition hover:bg-teal-700"
-          >
-            <Upload className="h-4 w-4" aria-hidden="true" />
-            Загрузить файл
-          </button>
-        </div>
-      </div>
-    </section>
+    <MascotEmptyPanel
+      title={error.title}
+      message={error.message}
+      secondaryMessage="Внутренние детали ошибки скрыты. Проверьте данные и попробуйте снова."
+      onRetry={onRetry}
+      onUpload={onUpload}
+      compact={false}
+    />
   );
 }

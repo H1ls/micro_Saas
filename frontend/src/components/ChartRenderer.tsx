@@ -29,9 +29,12 @@ export function ChartRenderer({ chart, selectedLabel, onSelectLabel }: ChartRend
 
   if (spec.y_key === null) {
     return (
-      <article className="rounded-lg border border-[rgba(148,163,184,0.14)] bg-white/90 p-4 shadow-xl shadow-slate-900/10 backdrop-blur-2xl">
+      <article className="grid h-full min-h-0 items-center gap-4 rounded-lg border border-white/60 bg-white/45 p-4 shadow-[0_24px_80px_rgba(35,54,73,0.14)] backdrop-blur-2xl sm:grid-cols-[110px_1fr]">
+        <img src="/fallback-empty-state.png" alt="" className="mx-auto max-h-32 w-full object-contain drop-shadow-[0_18px_28px_rgba(32,72,88,0.16)]" />
+        <div>
         <h3 className="text-base font-semibold text-slate-950">{spec.title}</h3>
         <p className="mt-3 text-sm text-slate-600">Этот график нельзя построить без числовой колонки значений.</p>
+        </div>
       </article>
     );
   }
