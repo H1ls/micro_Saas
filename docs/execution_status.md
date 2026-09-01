@@ -94,6 +94,7 @@
 | Перевод сайта на русский | DONE | 2026-08-31 22:35:05 +03:00 | `fef1e03` | Переведены visible UI тексты, frontend error copy и prompt-инструкции для русскоязычного narrative/ask output. |
 | Analysis source и degraded/error UI state | DONE | 2026-09-01 10:36:03 +03:00 | `7d8c52b` | `/api/analyze` возвращает `analysis_source: "ai" | "fallback"`; UI показывает аккуратный fallback notice и понятный Error State без raw JSON. |
 | One-screen glassmorphism dashboard и LLM insight summary | DONE | 2026-09-01 10:56:37 +03:00 | `21afadd` | UploadPanel сворачивается в левый нижний угол после Analyze; dashboard помещается в один экран; `AIAnalysis` содержит короткую `insight_summary` для Главного инсайта. |
+| Fallback empty state without charts | DONE | 2026-09-01 11:28:05 +03:00 | `17b4d6a` | При `analysis_source: "fallback"` frontend скрывает графики и показывает glassmorphism Empty State с маскотом, описанием ошибки и действиями retry/upload. |
 
 ## Проверки после завершения
 
@@ -134,3 +135,4 @@
 | One-screen glassmorphism Python compile | DONE | `2026-09-01 10:56:37 +03:00`: `.venv\Scripts\python.exe -m compileall app tests` прошел успешно. |
 | One-screen glassmorphism backend tests | DONE | `2026-09-01 10:56:37 +03:00`: `.venv\Scripts\python.exe -m pytest tests -q`: `27 passed`. |
 | One-screen glassmorphism frontend build | DONE | `2026-09-01 10:56:37 +03:00`: `npm.cmd run build` прошел успешно после запуска с правами на временный файл Vite config; Vite warning о chunk size оставлен без изменения scope. |
+| Fallback empty state frontend build | DONE | `2026-09-01 11:28:05 +03:00`: `npm.cmd run build` прошел успешно после запуска с правами на временный файл Vite config; Vite warning о chunk size оставлен без изменения scope. |

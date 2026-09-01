@@ -8,10 +8,12 @@ export function useDashboardSession() {
   const [status, setStatus] = useState<DashboardStatus>("idle");
   const [session, setSession] = useState<AnalyzeResponse | null>(null);
   const [error, setError] = useState<string>("");
+  const [lastInput, setLastInput] = useState<AnalyzeInput | null>(null);
 
   const analyze = useCallback(async (input: AnalyzeInput) => {
     setStatus("loading");
     setError("");
+    setLastInput(input);
 
     try {
       const result = await analyzeDataset(input);
@@ -24,11 +26,20 @@ export function useDashboardSession() {
     }
   }, []);
 
+  const retryLastAnalysis = useCallback(() => {
+    if (!lastInput) {
+      return;
+    }
+
+    void analyze(lastInput);
+  }, [analyze, lastInput]);
+
   const reset = useCallback(() => {
     setStatus("idle");
     setSession(null);
     setError("");
+    setLastInput(null);
   }, []);
 
-  return { analyze, reset, session, status, error };
+  return { analyze, retryLastAnalysis, reset, session, status, error };
 }

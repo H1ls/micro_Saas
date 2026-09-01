@@ -5,7 +5,7 @@ import { AppShell } from "./components/AppShell";
 import { useDashboardSession } from "./state/useDashboardSession";
 
 export default function App() {
-  const { analyze, reset, session, status, error } = useDashboardSession();
+  const { analyze, retryLastAnalysis, reset, session, status, error } = useDashboardSession();
   const isCollapsedUpload = status === "loading" || status === "ready";
 
   return (
@@ -16,7 +16,9 @@ export default function App() {
             <UploadPanel collapsed disabled={status === "loading"} onAnalyze={analyze} />
             <main className="h-full min-h-0">
               {status === "loading" && <LoadingState />}
-              {status === "ready" && session && <Dashboard session={session} />}
+              {status === "ready" && session && (
+                <Dashboard session={session} onRetry={retryLastAnalysis} onUpload={reset} />
+              )}
             </main>
           </>
         ) : (

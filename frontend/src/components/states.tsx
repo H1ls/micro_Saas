@@ -45,6 +45,56 @@ export function DegradedStateNotice() {
   );
 }
 
+interface FallbackDataStateProps {
+  onRetry: () => void;
+  onUpload: () => void;
+}
+
+export function FallbackDataState({ onRetry, onUpload }: FallbackDataStateProps) {
+  return (
+    <section className="min-h-0 overflow-hidden rounded-lg border border-white/60 bg-white/45 p-4 shadow-[0_24px_80px_rgba(35,54,73,0.14)] backdrop-blur-2xl">
+      <div className="grid h-full min-h-0 items-center gap-6 rounded-lg border border-white/50 bg-white/35 p-5 shadow-inner shadow-white/30 lg:grid-cols-[minmax(220px,0.72fr)_minmax(280px,1fr)]">
+        <div className="flex h-full min-h-0 items-center justify-center">
+          <img
+            src="/fallback-empty-state.png"
+            alt=""
+            className="max-h-full w-full max-w-[360px] object-contain drop-shadow-[0_24px_36px_rgba(32,72,88,0.18)]"
+          />
+        </div>
+        <div className="flex min-h-0 flex-col justify-center">
+          <p className="text-xs font-semibold uppercase text-teal-700">Fallback mode</p>
+          <h2 className="mt-2 text-2xl font-semibold text-slate-950">ИИ не собрал надежные графики</h2>
+          <p className="mt-3 max-w-xl text-sm leading-6 text-slate-600">
+            Данные загружены, но AI не вернул валидную структуру для dashboard или ответ не прошел проверку. Чтобы не
+            показывать сомнительную визуализацию, графики скрыты.
+          </p>
+          <p className="mt-2 max-w-xl text-sm leading-6 text-slate-500">
+            Можно повторить анализ с теми же данными или загрузить другой файл.
+          </p>
+          <div className="mt-6 flex flex-col gap-3 sm:flex-row">
+            <button
+              type="button"
+              onClick={onRetry}
+              className="inline-flex h-11 items-center justify-center gap-2 rounded-md border border-white/70 bg-white/55 px-4 text-sm font-semibold text-slate-800 shadow-sm transition hover:-translate-y-0.5 hover:bg-white/80"
+            >
+              <RotateCcw className="h-4 w-4" aria-hidden="true" />
+              Попробовать снова
+            </button>
+            <button
+              type="button"
+              onClick={onUpload}
+              className="inline-flex h-11 items-center justify-center gap-2 rounded-md bg-teal-600 px-4 text-sm font-semibold text-white shadow-lg shadow-teal-900/15 transition hover:-translate-y-0.5 hover:bg-teal-700"
+            >
+              <Upload className="h-4 w-4" aria-hidden="true" />
+              Загрузить файл
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
 interface ErrorStateProps {
   message: string;
   onRetry: () => void;
