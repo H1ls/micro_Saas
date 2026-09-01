@@ -29,6 +29,9 @@ For this MVP, use only chart types "bar", "line", and "pie".
 You choose chart type, x_key, and y_key. Do not return chart data points or numeric series.
 If the dataset comes from extracted raw text facts, use x_key "label", y_key "metric_value", and add filter by group and metric_key when needed.
 Write headline, insight_summary, narrative, key_observations, chart titles and reasons in Russian.
+Chart titles must clearly describe the displayed metric and grouping, for example "Выручка по регионам".
+If source data uses Russian labels or Russian column names, keep all user-facing text fully Russian.
+Do not expose technical keys in user-facing chart titles when a readable Russian label can be inferred from the dataset.
 """.strip()
 
 
@@ -46,6 +49,7 @@ def build_analysis_prompt(dataset: NormalizedDataset) -> str:
         "- Return 1-3 key_observations.\n"
         "- Recommend 2-3 charts when the available columns support them.\n"
         "- For charts, choose only type, x_key, y_key, title, reason, and optional filter; backend will calculate chart data.\n"
+        "- Chart titles must match what the chart actually displays: metric on y_key by x_key or trend over x_key.\n"
         "- If rows contain group/label/metric_key/metric_value, use filter to isolate one group and one metric_key per chart.\n"
-        "- Write all user-facing text in Russian."
+        "- Write all user-facing text in Russian when the dataset content is Russian; do not mix English technical keys into titles if readable labels are available."
     )

@@ -27,7 +27,7 @@ Return only valid JSON with this shape:
   "charts": [
     {
       "id": "chart_1",
-      "title": "orders by products",
+      "title": "заказы по товарам",
       "type": "bar",
       "x_key": "label",
       "y_key": "metric_value",
@@ -45,6 +45,8 @@ Normalize numeric values: "840 000" must become 840000.
 If a derived metric is explicitly implied by the text, such as average_order_value = total_revenue / total_orders, include it in metrics.
 Choose 2-3 useful charts from the extracted facts. Use only chart types "bar", "line", and "pie".
 For charts, use x_key "label", y_key "metric_value", and filter by group and metric_key so each chart contains one comparable fact group.
+Chart titles must be logical for the filtered facts and fully Russian when the source text is Russian.
+Use group_label and metric_label in chart titles instead of technical group or metric_key when available.
 Do not return chart data points or numeric series; backend will calculate chart data from structured_facts.
 If the text does not contain category-value facts, return empty structured_facts and charts arrays.
 Allowed confidence values: "high", "medium", "low".
@@ -125,6 +127,7 @@ def build_raw_text_extraction_prompt(raw_text: str) -> str:
         "- Metrics are totals or derived summary values.\n"
         "- Choose chart specs yourself: type must be bar, line, or pie; use x_key=\"label\", y_key=\"metric_value\".\n"
         "- Use chart filters to isolate one group and one metric_key, for example {\"group\":\"products\",\"metric_key\":\"orders\"}.\n"
+        "- Chart titles must use source-language labels, for example \"заказы по товарам\" instead of \"orders by products\".\n"
         "- Do not include calculated chart data; backend will aggregate values.\n"
         "- Return JSON only."
     )

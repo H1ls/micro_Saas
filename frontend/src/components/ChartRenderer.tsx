@@ -44,9 +44,9 @@ export function ChartRenderer({ chart, selectedLabel, onSelectLabel }: ChartRend
     return (
       <ChartFrame title={spec.title}>
         <ResponsiveContainer width="100%" height="100%">
-          <LineChart data={data} margin={{ top: 14, right: 18, left: -16, bottom: 30 }}>
+          <LineChart data={data} margin={{ top: 18, right: 18, left: -16, bottom: 64 }}>
             <CartesianGrid stroke="rgba(100, 116, 139, 0.10)" strokeWidth={0.7} strokeDasharray="2 10" vertical={false} />
-            <XAxis dataKey={labelKey} tick={axisTick} tickLine={false} axisLine={false} interval="preserveStartEnd" />
+            <XAxis dataKey={labelKey} tick={renderXAxisTick} tickLine={false} axisLine={false} interval={0} height={72} />
             <YAxis tick={hiddenYAxisTick} tickLine={false} axisLine={false} width={34} />
             <Tooltip
               content={<ChartTooltip labelKey={labelKey} valueKey={valueKey} />}
@@ -61,9 +61,7 @@ export function ChartRenderer({ chart, selectedLabel, onSelectLabel }: ChartRend
               strokeWidth={3}
               dot={{ r: 3, fill: "#14b8a6", strokeWidth: 0 }}
               activeDot={{ r: 5, fill: "#f59e0b", stroke: "#fff", strokeWidth: 2 }}
-            >
-              <LabelList dataKey={valueKey} position="top" formatter={formatCompactValue} fill="#334155" fontSize={11} />
-            </Line>
+            />
           </LineChart>
         </ResponsiveContainer>
       </ChartFrame>
@@ -121,13 +119,13 @@ export function ChartRenderer({ chart, selectedLabel, onSelectLabel }: ChartRend
   return (
     <ChartFrame title={spec.title}>
       <ResponsiveContainer width="100%" height="100%">
-        <BarChart data={data} margin={{ top: 16, right: 14, left: -18, bottom: 34 }} onMouseLeave={() => onSelectLabel(null)}>
+        <BarChart data={data} margin={{ top: 28, right: 14, left: -18, bottom: 64 }} onMouseLeave={() => onSelectLabel(null)}>
           <CartesianGrid stroke="rgba(100, 116, 139, 0.10)" strokeWidth={0.7} strokeDasharray="2 10" vertical={false} />
           <XAxis
             dataKey={labelKey}
-            height={42}
+            height={72}
             interval={0}
-            tick={axisTick}
+            tick={renderXAxisTick}
             tickLine={false}
             axisLine={false}
             minTickGap={8}
@@ -152,7 +150,7 @@ export function ChartRenderer({ chart, selectedLabel, onSelectLabel }: ChartRend
                 />
               );
             })}
-            <LabelList dataKey={valueKey} position="top" formatter={formatCompactValue} fill="#334155" fontSize={11} />
+            <LabelList dataKey={valueKey} position="top" formatter={formatCompactValue} fill="#334155" fontSize={10} />
           </Bar>
         </BarChart>
       </ResponsiveContainer>
@@ -195,6 +193,58 @@ function ChartTooltip({ active, payload, labelKey, valueKey }: ChartTooltipProps
       <p className="mt-1 text-sm font-semibold text-slate-950">{formatCompactValue(row[valueKey])}</p>
     </div>
   );
+}
+
+function renderXAxisTick(props: { x?: number; y?: number; payload?: { value?: ChartValue } }) {
+  const { x = 0, y = 0, payload } = props;
+  const lines = wrapTickLabel(String(payload?.value ?? ""));
+  return (
+    <g transform={`translate(${x},${y + 8})`}>
+      {lines.map((line, index) => (
+        <text
+          key={`${line}-${index}`}
+          x={0}
+          y={index * 13}
+          textAnchor="middle"
+          fill={axisTick.fill}
+          fontSize={axisTick.fontSize}
+          fontWeight={axisTick.fontWeight}
+        >
+          {line}
+        </text>
+      ))}
+    </g>
+  );
+}
+
+function wrapTickLabel(value: string): string[] {
+  if (value.length <= 12) {
+    return [value];
+  }
+
+  const words = value.split(/\s+/).filter(Boolean);
+  if (words.length < 2) {
+    return value.match(/.{1,12}/g) ?? [value];
+  }
+
+  const lines: string[] = [];
+  let currentLine = "";
+  for (const word of words) {
+    const nextLine = currentLine ? `${currentLine} ${word}` : word;
+    if (nextLine.length > 14 && currentLine) {
+      lines.push(currentLine);
+      currentLine = word;
+    } else {
+      currentLine = nextLine;
+    }
+    if (lines.length === 3) {
+      break;
+    }
+  }
+  if (currentLine && lines.length < 3) {
+    lines.push(currentLine);
+  }
+  return lines.slice(0, 3);
 }
 
 function getCenterMetric(data: Array<Record<string, ChartValue>>, valueKey: string): number {
