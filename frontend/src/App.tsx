@@ -26,12 +26,18 @@ export default function App() {
           </main>
         )}
         {status === "error" && (
-          <div className="grid h-full min-h-0 gap-6 xl:grid-cols-[420px_minmax(0,1fr)]">
-            <UploadPanel disabled={false} onAnalyze={analyze} />
-            <main className="min-h-0">
-              {error && <ErrorState error={error} onRetry={retryLastAnalysis} onUpload={reset} />}
+          error?.kind === "file_upload" ? (
+            <main className="h-full min-h-0">
+              <ErrorState error={error} onRetry={retryLastAnalysis} onUpload={reset} />
             </main>
-          </div>
+          ) : (
+            <div className="grid h-full min-h-0 gap-6 xl:grid-cols-[420px_minmax(0,1fr)]">
+              <UploadPanel disabled={false} onAnalyze={analyze} />
+              <main className="min-h-0">
+                {error && <ErrorState error={error} onRetry={retryLastAnalysis} onUpload={reset} />}
+              </main>
+            </div>
+          )
         )}
       </div>
     </AppShell>
