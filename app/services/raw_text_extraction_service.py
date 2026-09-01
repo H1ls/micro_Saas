@@ -30,7 +30,7 @@ FACT_COLUMNS = [
 
 @dataclass(frozen=True)
 class RawTextExtractionResult:
-    """Результат одного LLM extraction: проверенные факты, dataframe и backend analysis."""
+    """Результат raw-text extraction: проверенные факты, dataframe и dashboard analysis."""
 
     extraction: RawTextExtraction
     dataframe: pd.DataFrame
@@ -38,7 +38,17 @@ class RawTextExtractionResult:
 
 
 def extract_raw_text(raw_text: str) -> RawTextExtractionResult | None:
-    """Извлекает structured_facts/metrics из plain raw text одним LLM-запросом."""
+    """Извлекает structured facts/metrics из plain raw text одним LLM-запросом."""
+
+    extraction = request_raw_text_extraction(raw_text)
+    if not extraction or not extraction.facts:
+        return None
+
+    return build_raw_text_extraction_result(extraction)
+
+
+def request_raw_text_extraction(raw_text: str) -> RawTextExtraction | None:
+    """Запрашивает и валидирует один strict LLM extraction для plain raw text."""
 
     try:
         payload = complete_json(
@@ -47,12 +57,13 @@ def extract_raw_text(raw_text: str) -> RawTextExtractionResult | None:
             json_schema=RAW_TEXT_EXTRACTION_JSON_SCHEMA,
             strict_schema=True,
         )
-        extraction = parse_raw_text_extraction(payload)
+        return parse_raw_text_extraction(payload)
     except (LLMUnavailableError, InvalidLLMResponseError):
-        extraction = _deterministic_extraction(raw_text)
-
-    if not extraction or not extraction.facts:
         return None
+
+
+def build_raw_text_extraction_result(extraction: RawTextExtraction) -> RawTextExtractionResult:
+    """Собирает dataframe и dashboard analysis из валидного raw-text extraction."""
 
     dataframe = extraction_to_dataframe(extraction)
     analysis = build_raw_text_analysis(extraction)
@@ -60,14 +71,14 @@ def extract_raw_text(raw_text: str) -> RawTextExtractionResult | None:
 
 
 def extract_raw_text_dataframe(raw_text: str) -> pd.DataFrame | None:
-    """Совместимый wrapper для тестов/старого кода: возвращает только DataFrame."""
+    """Совместимый wrapper для старых вызовов, которым нужен только extracted dataframe."""
 
     result = extract_raw_text(raw_text)
     return result.dataframe if result is not None else None
 
 
 def extraction_to_dataframe(extraction: RawTextExtraction) -> pd.DataFrame:
-    """Преобразует structured_facts в tabular shape для profiling и chart_service."""
+    """Преобразует structured facts в tabular shape для profiling и подготовки графиков."""
 
     rows = [fact.model_dump() for fact in extraction.facts]
     metrics_by_key = {metric.metric_key: metric.metric_value for metric in extraction.metrics}
@@ -79,10 +90,27 @@ def extraction_to_dataframe(extraction: RawTextExtraction) -> pd.DataFrame:
 
 
 def build_raw_text_analysis(extraction: RawTextExtraction) -> AIAnalysis:
-    """Строит dashboard narrative и chart specs из проверенного extraction без второго LLM."""
+    """Собирает dashboard narrative и chart specs из валидного raw-text extraction."""
+
+    insight_summary = _lead_fact(extraction) or "Данные извлечены из текста и нормализованы в факты и метрики."
+    return AIAnalysis(
+        headline="Главный инсайт по текстовым данным",
+        insight_summary=insight_summary,
+        narrative=insight_summary,
+        key_observations=_observations(extraction),
+        charts=build_raw_text_chart_specs(extraction),
+    )
+
+
+def build_raw_text_chart_specs(extraction: RawTextExtraction) -> list[ChartSpec]:
+    """Собирает валидные LLM chart specs или deterministic specs для extracted facts."""
+
+    llm_charts = _valid_llm_charts(extraction)
+    if llm_charts:
+        return llm_charts
 
     grouped_facts = _group_facts_for_charts(extraction)
-    charts = [
+    return [
         ChartSpec(
             id=f"raw_{index}_{_slug(group)}_{_slug(metric_key)}",
             title=_chart_title(group_label or group, metric_label or metric_key),
@@ -94,22 +122,10 @@ def build_raw_text_analysis(extraction: RawTextExtraction) -> AIAnalysis:
         )
         for index, ((group, metric_key, group_label, metric_label), facts) in enumerate(grouped_facts[:3], start=1)
     ]
-    llm_charts = _valid_llm_charts(extraction)
-    if llm_charts:
-        charts = llm_charts
-
-    insight_summary = _lead_fact(extraction) or "Данные извлечены из текста и нормализованы в факты и метрики."
-    return AIAnalysis(
-        headline="Главный инсайт по текстовым данным",
-        insight_summary=insight_summary,
-        narrative=insight_summary,
-        key_observations=_observations(extraction),
-        charts=charts,
-    )
 
 
 def parse_raw_text_extraction(payload: dict[str, Any]) -> RawTextExtraction:
-    """Валидирует LLM extraction JSON и отбрасывает непригодные chart facts."""
+    """Валидирует LLM extraction JSON и отбрасывает факты, которые нельзя безопасно визуализировать."""
 
     try:
         extraction = RawTextExtraction.model_validate(payload)
@@ -129,10 +145,6 @@ def parse_raw_text_extraction(payload: dict[str, Any]) -> RawTextExtraction:
         raise InvalidLLMResponseError()
 
     return extraction.model_copy(update={"structured_facts": valid_facts})
-
-
-def _deterministic_extraction(raw_text: str) -> RawTextExtraction | None:
-    return None
 
 
 def _group_facts_for_charts(
@@ -176,7 +188,8 @@ def _lead_fact(extraction: RawTextExtraction) -> str | None:
     top_fact = max(extraction.facts, key=lambda fact: fact.metric_value)
     value = _format_number(top_fact.metric_value)
     unit = f" {top_fact.unit}" if top_fact.unit else ""
-    return f"{top_fact.label} показывает максимум: {value}{unit} по метрике {top_fact.metric_key}."
+    metric_label = top_fact.metric_label or top_fact.metric_key
+    return f"{top_fact.label} показывает максимум: {value}{unit} по метрике {metric_label}."
 
 
 def _observations(extraction: RawTextExtraction) -> list[str]:

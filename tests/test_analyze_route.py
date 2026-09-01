@@ -1,6 +1,6 @@
 from fastapi.testclient import TestClient
 
-from app.api.routes import analyze
+from app.services import dashboard_service
 from app.domain.models import AnalysisResult, NormalizedDataset
 from app.main import app
 from app.services.analysis_service import fallback_analysis
@@ -19,7 +19,7 @@ def fallback_result(dataset: NormalizedDataset) -> AnalysisResult:
 
 def test_analyze_csv_returns_session_analysis_and_chart(monkeypatch) -> None:
     clear_sessions()
-    monkeypatch.setattr(analyze, "analyze_dataset_with_llm", fallback_result)
+    monkeypatch.setattr(dashboard_service, "analyze_dataset_with_llm", fallback_result)
     client = TestClient(app)
 
     response = client.post(
@@ -38,7 +38,7 @@ def test_analyze_csv_returns_session_analysis_and_chart(monkeypatch) -> None:
 
 def test_analyze_raw_text_returns_dataset_without_chart(monkeypatch) -> None:
     clear_sessions()
-    monkeypatch.setattr(analyze, "analyze_dataset_with_llm", fallback_result)
+    monkeypatch.setattr(dashboard_service, "analyze_dataset_with_llm", fallback_result)
     client = TestClient(app)
 
     response = client.post("/api/analyze", data={"raw_text": "First note\nSecond note"})
@@ -106,8 +106,8 @@ def test_analyze_plain_raw_text_extracts_facts_with_one_llm_call(monkeypatch) ->
     def fail_if_second_llm_call(dataset: NormalizedDataset) -> AnalysisResult:
         raise AssertionError("raw_text extracted path must not call analysis LLM")
 
-    monkeypatch.setattr(analyze, "extract_raw_text", fake_extract_raw_text)
-    monkeypatch.setattr(analyze, "analyze_dataset_with_llm", fail_if_second_llm_call)
+    monkeypatch.setattr(dashboard_service, "extract_raw_text", fake_extract_raw_text)
+    monkeypatch.setattr(dashboard_service, "analyze_dataset_with_llm", fail_if_second_llm_call)
 
     response = client.post(
         "/api/analyze",
