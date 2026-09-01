@@ -1,4 +1,4 @@
-import { AlertTriangle, BarChart3, RotateCcw, Upload } from "lucide-react";
+import { AlertTriangle, BarChart3, Check, Database, FileSearch, RotateCcw, Sparkles, Upload } from "lucide-react";
 
 export function EmptyState() {
   return (
@@ -15,43 +15,63 @@ export function EmptyState() {
 }
 
 export function LoadingState() {
+  const steps = [
+    { label: "Читаем данные", icon: FileSearch },
+    { label: "Собираем структуру", icon: Database },
+    { label: "Готовим инсайт", icon: Sparkles },
+  ];
+
   return (
     <section className="flex h-full min-h-[620px] items-center justify-center overflow-hidden rounded-lg border border-white/55 bg-white/35 p-6 shadow-[0_28px_90px_rgba(37,58,76,0.14)] backdrop-blur-2xl">
-      <div className="relative flex aspect-[4/3] w-full max-w-[420px] items-center justify-center">
-        <div className="absolute inset-8 rounded-full bg-cyan-200/20 blur-3xl" aria-hidden="true" />
-        <img
-          src="/loading-mascot.png"
-          alt="Загрузка анализа данных"
-          className="relative h-full w-full object-contain drop-shadow-[0_28px_42px_rgba(21,94,117,0.18)]"
-        />
-        <svg className="pointer-events-none absolute inset-0 h-full w-full" viewBox="0 0 420 320" aria-hidden="true">
-          <defs>
-            <filter id="loadingPieGlow" x="-35%" y="-35%" width="170%" height="170%">
-              <feGaussianBlur stdDeviation="3.2" result="blur" />
-              <feMerge>
-                <feMergeNode in="blur" />
-                <feMergeNode in="SourceGraphic" />
-              </feMerge>
-            </filter>
-          </defs>
-          <g filter="url(#loadingPieGlow)" opacity="0.82">
-            <path d="M298 178 L298 111 A67 67 0 0 1 356 145 Z" fill="#ff766d" fillOpacity="0.42" stroke="#ff8b82" strokeWidth="3">
-              <animateTransform attributeName="transform" type="translate" values="34 -18;34 -18;0 0;0 0;34 -18" keyTimes="0;0.12;0.34;0.74;1" dur="2s" repeatCount="indefinite" />
-            </path>
-            <path d="M298 178 L356 145 A67 67 0 0 1 329 235 Z" fill="#3ba7ff" fillOpacity="0.42" stroke="#62c7ff" strokeWidth="3">
-              <animateTransform attributeName="transform" type="translate" values="42 32;42 32;42 32;0 0;42 32" keyTimes="0;0.25;0.42;0.62;1" dur="2s" repeatCount="indefinite" />
-            </path>
-            <path d="M298 178 L329 235 A67 67 0 0 1 242 216 Z" fill="#ffd05a" fillOpacity="0.46" stroke="#ffd76e" strokeWidth="3">
-              <animateTransform attributeName="transform" type="translate" values="-30 38;-30 38;-30 38;0 0;-30 38" keyTimes="0;0.42;0.55;0.72;1" dur="2s" repeatCount="indefinite" />
-            </path>
-            <path d="M298 178 L242 216 A67 67 0 0 1 298 111 Z" fill="#23d7d0" fillOpacity="0.38" stroke="#67fff5" strokeWidth="3">
-              <animate attributeName="opacity" values="0.45;0.76;0.45" dur="2s" repeatCount="indefinite" />
-            </path>
-            <circle cx="298" cy="178" r="68" fill="none" stroke="#ffffff" strokeOpacity="0.55" strokeWidth="2">
-              <animate attributeName="opacity" values="0;0;0.8;0" keyTimes="0;0.62;0.76;1" dur="2s" repeatCount="indefinite" />
-            </circle>
-          </g>
-        </svg>
+      <div className="grid h-full w-full max-w-[1040px] items-center gap-8 lg:grid-cols-[minmax(300px,0.9fr)_minmax(360px,1fr)]">
+        <div className="relative flex aspect-[4/3] w-full max-w-[420px] items-center justify-center justify-self-center">
+          <div className="absolute inset-8 rounded-full bg-cyan-200/20 blur-3xl" aria-hidden="true" />
+          <img
+            src="/loading-mascot.png"
+            alt="Загрузка анализа данных"
+            className="relative h-full w-full object-contain drop-shadow-[0_28px_42px_rgba(21,94,117,0.18)]"
+          />
+        </div>
+
+        <div className="min-w-0">
+          <div className="rounded-lg border border-white/60 bg-white/45 p-5 shadow-inner shadow-white/30 backdrop-blur-xl">
+            <div className="flex items-center justify-between gap-4">
+              <div>
+                <p className="text-xs font-semibold uppercase tracking-[0.18em] text-teal-700">Подготовка dashboard</p>
+                <h2 className="mt-2 text-xl font-semibold text-slate-950">Анализируем данные</h2>
+              </div>
+              <div className="h-2 w-24 overflow-hidden rounded-full bg-slate-200/70">
+                <div className="loading-progress h-full rounded-full bg-teal-500" />
+              </div>
+            </div>
+
+            <div className="mt-5 space-y-3">
+              {steps.map((step, index) => {
+                const Icon = step.icon;
+                return (
+                  <div
+                    key={step.label}
+                    className="loading-step flex items-center gap-3 rounded-lg border border-white/55 bg-white/45 px-3 py-2.5 shadow-sm"
+                    style={{ animationDelay: `${index * 900}ms` }}
+                  >
+                    <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-md bg-slate-950 text-white shadow-sm">
+                      <Icon className="h-4 w-4" aria-hidden="true" />
+                    </span>
+                    <span className="min-w-0 flex-1 text-sm font-medium text-slate-800">{step.label}</span>
+                    <Check className="h-4 w-4 shrink-0 text-teal-600" aria-hidden="true" />
+                  </div>
+                );
+              })}
+            </div>
+
+            <div className="mt-6 grid gap-3 sm:grid-cols-3">
+              <div className="loading-skeleton h-16 rounded-lg border border-white/50 bg-white/40" />
+              <div className="loading-skeleton h-16 rounded-lg border border-white/50 bg-white/40 [animation-delay:180ms]" />
+              <div className="loading-skeleton h-16 rounded-lg border border-white/50 bg-white/40 [animation-delay:360ms]" />
+            </div>
+            <div className="loading-skeleton mt-3 h-32 rounded-lg border border-white/50 bg-white/40 [animation-delay:540ms]" />
+          </div>
+        </div>
       </div>
     </section>
   );
