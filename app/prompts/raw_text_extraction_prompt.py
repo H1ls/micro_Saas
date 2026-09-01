@@ -2,8 +2,8 @@ from __future__ import annotations
 
 
 RAW_TEXT_EXTRACTION_SYSTEM_PROMPT = """
-You extract structured facts only from the raw text provided by the user.
-Return only valid JSON with this shape:
+Извлекай структурированные факты только из raw text, предоставленного пользователем.
+Верни только валидный JSON следующей структуры:
 {
   "structured_facts": [
     {
@@ -31,25 +31,25 @@ Return only valid JSON with this shape:
       "type": "bar",
       "x_key": "label",
       "y_key": "metric_value",
-      "reason": "Compare extracted product order counts.",
+      "reason": "Сравнение количества заказов по извлеченным товарам.",
       "filter": { "group": "products", "metric_key": "orders" }
     }
   ],
   "confidence": "high"
 }
-Do not invent facts, labels, metrics, currencies, dates, categories, or values.
-Use concise stable English keys for group, label_key, metric_key, and unit.
-Use group_label and metric_label for user-facing labels in the source text language.
-Keep label values in the language used by the source text.
-Normalize numeric values: "840 000" must become 840000.
-If a derived metric is explicitly implied by the text, such as average_order_value = total_revenue / total_orders, include it in metrics.
-Choose 2-3 useful charts from the extracted facts. Use only chart types "bar", "line", and "pie".
-For charts, use x_key "label", y_key "metric_value", and filter by group and metric_key so each chart contains one comparable fact group.
-Chart titles must be logical for the filtered facts and fully Russian when the source text is Russian.
-Use group_label and metric_label in chart titles instead of technical group or metric_key when available.
-Do not return chart data points or numeric series; backend will calculate chart data from structured_facts.
-If the text does not contain category-value facts, return empty structured_facts and charts arrays.
-Allowed confidence values: "high", "medium", "low".
+Не придумывай факты, подписи, метрики, валюты, даты, категории или значения.
+Для group, label_key, metric_key и unit используй короткие стабильные английские ключи.
+Для пользовательских подписей на языке исходного текста используй group_label и metric_label.
+Значения label сохраняй на языке исходного текста.
+Нормализуй числовые значения: "840 000" должно преобразовываться в 840000.
+Если производная метрика явно следует из текста, например average_order_value = total_revenue / total_orders, добавляй ее в metrics.
+Выбирай 2-3 полезных графика на основе извлеченных фактов. Используй только типы графиков "bar", "line" и "pie".
+Для графиков используй x_key "label", y_key "metric_value" и filter по group и metric_key, чтобы каждый график содержал одну сопоставимую группу фактов.
+Названия графиков должны логично соответствовать отфильтрованным фактам и быть полностью на русском языке, если исходный текст на русском.
+Если доступны group_label и metric_label, используй их в названиях графиков вместо технических group и metric_key.
+Не возвращай точки графика или числовые ряды; backend сам рассчитает данные графиков из structured_facts.
+Если текст не содержит фактов вида категория-значение, верни пустые массивы structured_facts и charts.
+Допустимые значения confidence: "high", "medium", "low".
 """.strip()
 
 
@@ -118,16 +118,16 @@ def build_raw_text_extraction_prompt(raw_text: str) -> str:
     """Строит prompt для извлечения фактов из неструктурированного raw text."""
 
     return (
-        "Extract normalized facts and summary metrics from this raw text.\n\n"
+        "Извлеки нормализованные факты и итоговые метрики из этого неструктурированного текста.\n\n"
         f"{raw_text.strip()}\n\n"
-        "Rules:\n"
-        "- Use only information present in the text.\n"
-        "- structured_facts are category rows suitable for charts.\n"
-        "- Use Russian user-facing labels when the source text is Russian, e.g. metric_label=\"заказы\", group_label=\"товарам\".\n"
-        "- Metrics are totals or derived summary values.\n"
-        "- Choose chart specs yourself: type must be bar, line, or pie; use x_key=\"label\", y_key=\"metric_value\".\n"
-        "- Use chart filters to isolate one group and one metric_key, for example {\"group\":\"products\",\"metric_key\":\"orders\"}.\n"
-        "- Chart titles must use source-language labels, for example \"заказы по товарам\" instead of \"orders by products\".\n"
-        "- Do not include calculated chart data; backend will aggregate values.\n"
-        "- Return JSON only."
+        "Правила:\n"
+        "- Используй только информацию, присутствующую в тексте.\n"
+        "- structured_facts — это категориальные строки, подходящие для построения графиков.\n"
+        "- Если исходный текст на русском языке, используй русские пользовательские подписи, например metric_label=\"заказы\", group_label=\"товарам\".\n"
+        "- Metrics — это итоговые или вычисленные сводные значения.\n"
+        "- Самостоятельно выбирай параметры графиков: type должен быть bar, line или pie; используй x_key=\"label\", y_key=\"metric_value\".\n"
+        "- Используй chart filters, чтобы выделять одну группу и один metric_key, например {\"group\":\"products\",\"metric_key\":\"orders\"}.\n"
+        "- Названия графиков должны использовать язык исходных данных, например \"заказы по товарам\" вместо \"orders by products\".\n"
+        "- Не включай рассчитанные данные для графиков; backend сам агрегирует значения.\n"
+        "- Верни только JSON."
     )
