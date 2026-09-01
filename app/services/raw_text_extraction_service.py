@@ -94,6 +94,9 @@ def build_raw_text_analysis(extraction: RawTextExtraction) -> AIAnalysis:
         )
         for index, ((group, metric_key, group_label, metric_label), facts) in enumerate(grouped_facts[:3], start=1)
     ]
+    llm_charts = _valid_llm_charts(extraction)
+    if llm_charts:
+        charts = llm_charts
 
     insight_summary = _lead_fact(extraction) or "Данные извлечены из текста и нормализованы в факты и метрики."
     return AIAnalysis(
@@ -146,6 +149,25 @@ def _chart_type(index: int, fact_count: int) -> str:
     if index == 2 and fact_count <= 8:
         return "pie"
     return "bar"
+
+
+def _valid_llm_charts(extraction: RawTextExtraction) -> list[ChartSpec]:
+    valid_filters = {
+        (fact.group, fact.metric_key)
+        for fact in extraction.facts
+        if fact.group.strip() and fact.metric_key.strip()
+    }
+    valid_charts = []
+    for chart in extraction.charts:
+        chart_filter = chart.filter or {}
+        if chart.x_key != "label" or chart.y_key != "metric_value":
+            continue
+        group = chart_filter.get("group")
+        metric_key = chart_filter.get("metric_key")
+        if (group, metric_key) not in valid_filters:
+            continue
+        valid_charts.append(chart)
+    return valid_charts[:3]
 
 
 def _lead_fact(extraction: RawTextExtraction) -> str | None:

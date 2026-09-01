@@ -118,6 +118,7 @@ class RawTextExtraction(BaseModel):
         serialization_alias="structured_facts",
     )
     metrics: list[ExtractedMetric] = Field(default_factory=list)
+    charts: list[ChartSpec] = Field(default_factory=list)
     confidence: ExtractionConfidence = "medium"
 
     @property

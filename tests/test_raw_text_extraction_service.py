@@ -36,6 +36,17 @@ def test_extract_raw_text_uses_one_llm_call_and_structured_facts(monkeypatch) ->
                 {"metric_key": "total_orders", "metric_value": 120, "unit": "orders"},
                 {"metric_key": "total_revenue", "metric_value": "840 000", "unit": "rub"},
             ],
+            "charts": [
+                {
+                    "id": "llm_products_pie",
+                    "title": "Заказы по товарам",
+                    "type": "pie",
+                    "x_key": "label",
+                    "y_key": "metric_value",
+                    "reason": "LLM selected a share view for product orders.",
+                    "filter": {"group": "products", "metric_key": "orders"},
+                }
+            ],
             "confidence": "high",
         }
 
@@ -50,4 +61,6 @@ def test_extract_raw_text_uses_one_llm_call_and_structured_facts(monkeypatch) ->
     assert list(dataframe["metric_value"]) == [52.0, 360000.0]
     assert dataframe.loc[0, "total_orders"] == 120.0
     assert dataframe.loc[1, "total_revenue"] == 840000.0
+    assert result.analysis.charts[0].id == "llm_products_pie"
+    assert result.analysis.charts[0].type == "pie"
     assert result.analysis.charts[0].filter == {"group": "products", "metric_key": "orders"}
