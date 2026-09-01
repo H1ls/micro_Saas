@@ -6,7 +6,7 @@ from typing import Any
 from pydantic import ValidationError
 
 from app.domain.errors import InvalidLLMResponseError, LLMUnavailableError
-from app.domain.models import AIAnalysis, ChartSpec, NormalizedDataset
+from app.domain.models import AIAnalysis, AnalysisResult, ChartSpec, NormalizedDataset
 from app.prompts.analysis_prompt import ANALYSIS_SYSTEM_PROMPT, build_analysis_prompt
 from app.services.chart_service import recommend_fallback_charts
 from app.services.llm_client import complete_json
@@ -16,7 +16,7 @@ MAX_HEADLINE_LENGTH = 140
 MAX_NARRATIVE_LENGTH = 900
 
 
-def analyze_dataset(dataset: NormalizedDataset) -> AIAnalysis:
+def analyze_dataset(dataset: NormalizedDataset) -> AnalysisResult:
     """Пробует LLM analysis и при любой controlled LLM/validation ошибке возвращает fallback."""
 
     try:
@@ -25,9 +25,9 @@ def analyze_dataset(dataset: NormalizedDataset) -> AIAnalysis:
             user_prompt=build_analysis_prompt(dataset),
         )
         analysis = parse_analysis_json(raw)
-        return validate_analysis(dataset, analysis)
+        return AnalysisResult(analysis=validate_analysis(dataset, analysis), source="ai")
     except (LLMUnavailableError, InvalidLLMResponseError):
-        return fallback_analysis(dataset)
+        return AnalysisResult(analysis=fallback_analysis(dataset), source="fallback")
 
 
 def fallback_analysis(dataset: NormalizedDataset) -> AIAnalysis:

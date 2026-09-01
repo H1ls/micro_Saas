@@ -1,6 +1,7 @@
 export type SourceType = "csv" | "excel" | "text";
 export type ColumnType = "number" | "date" | "category" | "text" | "unknown";
 export type ChartType = "bar" | "line" | "pie";
+export type AnalysisSource = "ai" | "fallback";
 
 export interface ColumnProfile {
   name: string;
@@ -40,6 +41,7 @@ export interface AIAnalysis {
 
 export interface AnalyzeResponse {
   session_id: string;
+  analysis_source: AnalysisSource;
   dataset: DatasetSummary;
   analysis: AIAnalysis;
   charts: PreparedChart[];

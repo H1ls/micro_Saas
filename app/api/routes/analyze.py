@@ -28,12 +28,14 @@ def analyze_dataset(
         parsed_input.source_type,
         parsed_input.filename,
     )
-    analysis = analyze_dataset_with_llm(dataset)
+    analysis_result = analyze_dataset_with_llm(dataset)
+    analysis = analysis_result.analysis
     charts = prepare_charts(dataset, analysis.charts)
-    session = create_session(dataset, analysis, charts)
+    session = create_session(dataset, analysis, analysis_result.source, charts)
 
     return AnalyzeResponse(
         session_id=session.id,
+        analysis_source=session.analysis_source,
         dataset=DatasetSummary(
             source_type=dataset.source_type,
             filename=dataset.filename,

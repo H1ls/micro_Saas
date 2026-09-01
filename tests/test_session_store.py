@@ -12,9 +12,10 @@ def test_create_and_get_session() -> None:
     dataset = _dataset()
     analysis = _analysis()
 
-    session = session_store.create_session(dataset, analysis, [])
+    session = session_store.create_session(dataset, analysis, "ai", [])
 
     assert session_store.get_session(session.id).id == session.id
+    assert session.analysis_source == "ai"
 
 
 def test_expired_session_is_removed(monkeypatch: pytest.MonkeyPatch) -> None:
@@ -23,6 +24,7 @@ def test_expired_session_is_removed(monkeypatch: pytest.MonkeyPatch) -> None:
         id="expired",
         dataset=_dataset(),
         analysis=_analysis(),
+        analysis_source="fallback",
         charts=[],
         created_at=datetime.now(timezone.utc) - timedelta(minutes=120),
     )

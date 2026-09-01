@@ -2,6 +2,7 @@ from pydantic import BaseModel, Field
 
 from app.domain.models import (
     AIAnalysis,
+    AnalysisSource,
     AskConfidence,
     ColumnProfile,
     PreparedChart,
@@ -23,6 +24,7 @@ class DatasetSummary(BaseModel):
 
 class AnalyzeResponse(BaseModel):
     session_id: str
+    analysis_source: AnalysisSource
     dataset: DatasetSummary
     analysis: AIAnalysis
     charts: list[PreparedChart]

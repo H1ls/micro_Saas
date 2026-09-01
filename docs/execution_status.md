@@ -92,6 +92,7 @@
 |---|---|---|---|---|
 | Русские docstrings под классами и сложными функциями | DONE | 2026-08-31 22:35:05 +03:00 | `fef1e03` | Добавлены docstrings к domain-моделям, public service functions, prompt builders и API handlers. |
 | Перевод сайта на русский | DONE | 2026-08-31 22:35:05 +03:00 | `fef1e03` | Переведены visible UI тексты, frontend error copy и prompt-инструкции для русскоязычного narrative/ask output. |
+| Analysis source и degraded/error UI state | DONE | 2026-09-01 10:36:03 +03:00 | `pending commit` | `/api/analyze` возвращает `analysis_source: "ai" | "fallback"`; UI показывает аккуратный fallback notice и понятный Error State без raw JSON. |
 
 ## Проверки после завершения
 
@@ -126,3 +127,6 @@
 | Tech dect Python compile | DONE | `2026-08-31 22:35:05 +03:00`: `.venv\Scripts\python.exe -m compileall app tests` прошел успешно. |
 | Tech dect backend tests | DONE | `2026-08-31 22:35:05 +03:00`: `.venv\Scripts\python.exe -m pytest tests -q`: `27 passed`. |
 | Tech dect frontend build | DONE | `2026-08-31 22:35:05 +03:00`: `npm.cmd run build` прошел успешно. Vite warning о chunk size оставлен без изменения scope. |
+| Analysis source Python compile | DONE | `2026-09-01 10:36:03 +03:00`: `.venv\Scripts\python.exe -m compileall app tests` прошел успешно. |
+| Analysis source backend tests | DONE | `2026-09-01 10:36:03 +03:00`: `.venv\Scripts\python.exe -m pytest tests -q`: `27 passed`. |
+| Analysis source frontend build | DONE | `2026-09-01 10:36:03 +03:00`: `npm.cmd run build` прошел успешно после запуска с правами на временный файл Vite config; Vite warning о chunk size оставлен без изменения scope. |

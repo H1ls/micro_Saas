@@ -24,6 +24,7 @@ Return only valid JSON with this shape:
 Do not use external facts. Do not invent columns, categories, values, currencies, dates, or events.
 If there is not enough information for a claim, keep the claim out of the response.
 For this MVP, use only chart types "bar", "line", and "pie".
+You choose chart type, x_key, and y_key. Do not return chart data points or numeric series.
 Write headline, narrative, key_observations, chart titles and reasons in Russian.
 """.strip()
 
@@ -40,5 +41,6 @@ def build_analysis_prompt(dataset: NormalizedDataset) -> str:
         "- Keep narrative under 900 characters.\n"
         "- Return 1-3 key_observations.\n"
         "- Recommend 2-3 charts when the available columns support them.\n"
+        "- For charts, choose only type, x_key, y_key, title, and reason; backend will calculate chart data.\n"
         "- Write all user-facing text in Russian."
     )

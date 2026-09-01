@@ -8,6 +8,7 @@ ColumnType = Literal["number", "category", "date", "text", "unknown"]
 SourceType = Literal["csv", "excel", "text"]
 ChartType = Literal["bar", "line", "pie"]
 AskConfidence = Literal["high", "medium", "low", "none"]
+AnalysisSource = Literal["ai", "fallback"]
 
 
 class ColumnProfile(BaseModel):
@@ -62,11 +63,19 @@ class AIAnalysis(BaseModel):
     charts: list[ChartSpec]
 
 
+class AnalysisResult(BaseModel):
+    """Результат analysis с явным источником: LLM или deterministic fallback."""
+
+    analysis: AIAnalysis
+    source: AnalysisSource
+
+
 class DatasetSession(BaseModel):
     """In-memory session с dataset, анализом и графиками для последующих вопросов."""
 
     id: str
     dataset: NormalizedDataset
     analysis: AIAnalysis
+    analysis_source: AnalysisSource
     charts: list[PreparedChart]
     created_at: datetime

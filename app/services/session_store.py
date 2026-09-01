@@ -5,7 +5,7 @@ from uuid import uuid4
 
 from app.core.config import get_settings
 from app.domain.errors import SessionNotFoundError
-from app.domain.models import AIAnalysis, DatasetSession, NormalizedDataset, PreparedChart
+from app.domain.models import AIAnalysis, AnalysisSource, DatasetSession, NormalizedDataset, PreparedChart
 
 _SESSIONS: dict[str, DatasetSession] = {}
 
@@ -13,6 +13,7 @@ _SESSIONS: dict[str, DatasetSession] = {}
 def create_session(
     dataset: NormalizedDataset,
     analysis: AIAnalysis,
+    analysis_source: AnalysisSource,
     charts: list[PreparedChart],
 ) -> DatasetSession:
     cleanup_expired_sessions()
@@ -20,6 +21,7 @@ def create_session(
         id=str(uuid4()),
         dataset=dataset,
         analysis=analysis,
+        analysis_source=analysis_source,
         charts=charts,
         created_at=datetime.now(timezone.utc),
     )

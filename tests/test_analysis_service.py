@@ -108,10 +108,11 @@ def test_analyze_dataset_uses_llm_when_response_is_valid(monkeypatch: pytest.Mon
 
     monkeypatch.setattr(analysis_service, "complete_json", fake_complete_json)
 
-    analysis = analyze_dataset(dataset)
+    result = analyze_dataset(dataset)
 
-    assert analysis.headline == "Revenue differs by segment"
-    assert analysis.charts[0].id == "chart_1"
+    assert result.source == "ai"
+    assert result.analysis.headline == "Revenue differs by segment"
+    assert result.analysis.charts[0].id == "chart_1"
 
 
 def test_analyze_dataset_falls_back_when_llm_fails(monkeypatch: pytest.MonkeyPatch) -> None:
@@ -122,7 +123,8 @@ def test_analyze_dataset_falls_back_when_llm_fails(monkeypatch: pytest.MonkeyPat
 
     monkeypatch.setattr(analysis_service, "complete_json", fake_complete_json)
 
-    analysis = analyze_dataset(dataset)
+    result = analyze_dataset(dataset)
 
-    assert analysis.headline == "revenue can be compared by segment"
-    assert analysis.charts[0].id == "fallback_bar_1"
+    assert result.source == "fallback"
+    assert result.analysis.headline == "revenue can be compared by segment"
+    assert result.analysis.charts[0].id == "fallback_bar_1"
