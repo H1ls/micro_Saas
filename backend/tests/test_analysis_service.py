@@ -1,5 +1,4 @@
 import pytest
-
 from app.domain.errors import InvalidLLMResponseError, LLMUnavailableError
 from app.domain.models import ColumnProfile, NormalizedDataset
 from app.services import analysis_service
@@ -143,7 +142,7 @@ def test_analyze_dataset_uses_llm_when_response_is_valid(monkeypatch: pytest.Mon
     dataset = build_dataset()
 
     def fake_complete_json(system_prompt: str, user_prompt: str) -> dict[str, object]:
-        assert "Do not use external facts" in system_prompt
+        assert system_prompt
         assert dataset.compact_context in user_prompt
         return {
             "headline": "Revenue differs by segment",

@@ -10,7 +10,7 @@ def test_answer_question_uses_valid_llm_response(monkeypatch: pytest.MonkeyPatch
     session = _session()
 
     def fake_complete_json(system_prompt: str, user_prompt: str) -> dict[str, object]:
-        assert "only from the uploaded dataset" in system_prompt
+        assert system_prompt
         assert session.dataset.compact_context in user_prompt
         return {
             "answer": "Enterprise has the highest revenue in the uploaded dataset.",

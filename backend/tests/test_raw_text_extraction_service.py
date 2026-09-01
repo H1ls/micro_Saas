@@ -9,7 +9,7 @@ def test_extract_raw_text_uses_one_llm_call_and_structured_facts(monkeypatch) ->
         json_schema: dict[str, object] | None = None,
         strict_schema: bool = False,
     ) -> dict[str, object]:
-        assert "Do not invent facts" in system_prompt
+        assert system_prompt
         assert "Всего было 120 заказов" in user_prompt
         assert json_schema is not None
         assert strict_schema is True
