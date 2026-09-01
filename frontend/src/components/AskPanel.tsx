@@ -35,12 +35,12 @@ export function AskPanel({ sessionId }: AskPanelProps) {
   }
 
   return (
-    <section className="flex min-h-0 flex-col gap-2 rounded-lg border border-slate-500/18 bg-slate-950/10 px-4 py-3 shadow-2xl shadow-slate-900/14 backdrop-blur-2xl">
-      <div className="min-h-[38px] overflow-hidden rounded-md border border-white/45 bg-white/26 px-3 py-2">
+    <section className="flex min-h-0 flex-col gap-2 rounded-xl border border-[rgba(148,163,184,0.18)] bg-slate-950/20 px-4 py-3 shadow-[0_24px_80px_rgba(15,23,42,0.24)] ring-1 ring-white/25 backdrop-blur-2xl">
+      <div className="min-h-[38px] overflow-hidden rounded-md border border-[rgba(148,163,184,0.14)] bg-white/42 px-3 py-2 shadow-inner shadow-white/20">
         {lastAnswer ? (
           <p className="line-clamp-2 text-sm leading-5 text-slate-800">{lastAnswer.answer}</p>
         ) : (
-          <p className="text-sm leading-5 text-slate-500">Ответ появится здесь после вопроса.</p>
+          <p className="text-sm leading-5 text-slate-600">Ответ появится здесь после вопроса.</p>
         )}
       </div>
       <div className="flex min-h-0 items-center gap-4">
@@ -49,7 +49,7 @@ export function AskPanel({ sessionId }: AskPanelProps) {
           <input
             value={question}
             onChange={(event) => setQuestion(event.target.value)}
-            className="h-11 min-w-0 flex-1 rounded-md border border-white/70 bg-white/55 px-3 text-sm outline-none transition focus:border-teal-500 focus:ring-4 focus:ring-teal-100"
+            className="h-11 min-w-0 flex-1 rounded-md border border-[rgba(148,163,184,0.14)] bg-white/82 px-3 text-sm text-slate-900 outline-none transition placeholder:text-slate-500 focus:border-[rgba(148,163,184,0.34)] focus:ring-4 focus:ring-slate-300/25"
             placeholder={error || "У какого сегмента самая высокая выручка?"}
             title={error}
           />

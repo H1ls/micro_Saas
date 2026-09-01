@@ -29,7 +29,7 @@ export function ChartRenderer({ chart, selectedLabel, onSelectLabel }: ChartRend
 
   if (spec.y_key === null) {
     return (
-      <article className="rounded-lg border border-white/60 bg-white/45 p-4 shadow-xl shadow-slate-900/10 backdrop-blur-2xl">
+      <article className="rounded-lg border border-[rgba(148,163,184,0.14)] bg-white/90 p-4 shadow-xl shadow-slate-900/10 backdrop-blur-2xl">
         <h3 className="text-base font-semibold text-slate-950">{spec.title}</h3>
         <p className="mt-3 text-sm text-slate-600">Этот график нельзя построить без числовой колонки значений.</p>
       </article>
@@ -44,10 +44,10 @@ export function ChartRenderer({ chart, selectedLabel, onSelectLabel }: ChartRend
     return (
       <ChartFrame title={spec.title}>
         <ResponsiveContainer width="100%" height="100%">
-          <LineChart data={data} margin={{ top: 14, right: 18, left: -8, bottom: 30 }}>
-            <CartesianGrid stroke="rgba(100, 116, 139, 0.18)" strokeDasharray="3 8" vertical={false} />
+          <LineChart data={data} margin={{ top: 14, right: 18, left: -16, bottom: 30 }}>
+            <CartesianGrid stroke="rgba(100, 116, 139, 0.10)" strokeWidth={0.7} strokeDasharray="2 10" vertical={false} />
             <XAxis dataKey={labelKey} tick={axisTick} tickLine={false} axisLine={false} interval="preserveStartEnd" />
-            <YAxis tick={axisTick} tickLine={false} axisLine={false} width={50} />
+            <YAxis tick={hiddenYAxisTick} tickLine={false} axisLine={false} width={34} />
             <Tooltip
               content={<ChartTooltip labelKey={labelKey} valueKey={valueKey} />}
               cursor={{ stroke: "rgba(20, 184, 166, 0.24)", strokeWidth: 2 }}
@@ -57,12 +57,12 @@ export function ChartRenderer({ chart, selectedLabel, onSelectLabel }: ChartRend
             <Line
               type="monotone"
               dataKey={valueKey}
-              stroke="#334155"
+              stroke="#0f766e"
               strokeWidth={3}
               dot={{ r: 3, fill: "#14b8a6", strokeWidth: 0 }}
               activeDot={{ r: 5, fill: "#f59e0b", stroke: "#fff", strokeWidth: 2 }}
             >
-              <LabelList dataKey={valueKey} position="top" formatter={formatCompactValue} fill="#475569" fontSize={11} />
+              <LabelList dataKey={valueKey} position="top" formatter={formatCompactValue} fill="#334155" fontSize={11} />
             </Line>
           </LineChart>
         </ResponsiveContainer>
@@ -75,7 +75,7 @@ export function ChartRenderer({ chart, selectedLabel, onSelectLabel }: ChartRend
       <ChartFrame title={spec.title}>
         <div className="relative h-full min-h-0">
           <ResponsiveContainer width="100%" height="100%">
-            <PieChart margin={{ top: 4, right: 8, left: 8, bottom: 4 }}>
+            <PieChart margin={{ top: 8, right: 18, left: 18, bottom: 8 }}>
               <Tooltip
                 content={<ChartTooltip labelKey={labelKey} valueKey={valueKey} />}
                 offset={34}
@@ -96,8 +96,8 @@ export function ChartRenderer({ chart, selectedLabel, onSelectLabel }: ChartRend
                   return (
                     <Cell
                       key={`${spec.id}-${index}`}
-                      fill={PIE_COLORS[index % PIE_COLORS.length]}
-                      fillOpacity={isMuted ? 0.28 : 0.92}
+                      fill={selectedLabel === label ? "#f59e0b" : PIE_COLORS[index % PIE_COLORS.length]}
+                      fillOpacity={isMuted ? 0.38 : 0.94}
                       stroke={selectedLabel === label ? "#f59e0b" : "rgba(255,255,255,0.78)"}
                       strokeWidth={selectedLabel === label ? 3 : 1}
                       onMouseEnter={() => onSelectLabel(label)}
@@ -121,8 +121,8 @@ export function ChartRenderer({ chart, selectedLabel, onSelectLabel }: ChartRend
   return (
     <ChartFrame title={spec.title}>
       <ResponsiveContainer width="100%" height="100%">
-        <BarChart data={data} margin={{ top: 16, right: 12, left: -8, bottom: 34 }} onMouseLeave={() => onSelectLabel(null)}>
-          <CartesianGrid stroke="rgba(100, 116, 139, 0.16)" strokeDasharray="3 8" vertical={false} />
+        <BarChart data={data} margin={{ top: 16, right: 14, left: -18, bottom: 34 }} onMouseLeave={() => onSelectLabel(null)}>
+          <CartesianGrid stroke="rgba(100, 116, 139, 0.10)" strokeWidth={0.7} strokeDasharray="2 10" vertical={false} />
           <XAxis
             dataKey={labelKey}
             height={42}
@@ -132,27 +132,27 @@ export function ChartRenderer({ chart, selectedLabel, onSelectLabel }: ChartRend
             axisLine={false}
             minTickGap={8}
           />
-          <YAxis tick={axisTick} tickLine={false} axisLine={false} width={50} />
+          <YAxis tick={hiddenYAxisTick} tickLine={false} axisLine={false} width={34} />
           <Tooltip
             cursor={{ fill: "rgba(15, 23, 42, 0.035)" }}
             content={<ChartTooltip labelKey={labelKey} valueKey={valueKey} />}
             offset={30}
             wrapperStyle={{ pointerEvents: "none" }}
           />
-          <Bar dataKey={valueKey} radius={[7, 7, 7, 7]} maxBarSize={54}>
+          <Bar dataKey={valueKey} radius={[9, 9, 9, 9]} maxBarSize={54}>
             {data.map((row, index) => {
               const label = String(row[labelKey] ?? "");
               const isMuted = Boolean(selectedLabel && selectedLabel !== label);
               return (
                 <Cell
                   key={`${spec.id}-${index}`}
-                  fill={selectedLabel === label ? "#f59e0b" : BAR_COLORS[index % BAR_COLORS.length]}
-                  fillOpacity={isMuted ? 0.32 : 0.92}
+                  fill={selectedLabel === label ? "#f59e0b" : index % 3 === 0 ? "#14b8a6" : index % 3 === 1 ? "#0f766e" : "#475569"}
+                  fillOpacity={isMuted ? 0.34 : 0.94}
                   onMouseEnter={() => onSelectLabel(label)}
                 />
               );
             })}
-            <LabelList dataKey={valueKey} position="top" formatter={formatCompactValue} fill="#475569" fontSize={11} />
+            <LabelList dataKey={valueKey} position="top" formatter={formatCompactValue} fill="#334155" fontSize={11} />
           </Bar>
         </BarChart>
       </ResponsiveContainer>
@@ -167,7 +167,7 @@ interface ChartFrameProps {
 
 function ChartFrame({ title, children }: ChartFrameProps) {
   return (
-    <article className="flex min-h-0 flex-col overflow-hidden rounded-lg border border-white/60 bg-white/46 p-4 shadow-2xl shadow-slate-950/8 backdrop-blur-2xl">
+    <article className="flex min-h-0 flex-col overflow-hidden rounded-lg border border-[rgba(148,163,184,0.14)] bg-white/90 p-4 shadow-xl shadow-slate-900/10 backdrop-blur-2xl">
       <div className="mb-2 shrink-0">
         <h3 className="truncate text-sm font-semibold text-slate-950">{title}</h3>
       </div>
@@ -190,8 +190,8 @@ function ChartTooltip({ active, payload, labelKey, valueKey }: ChartTooltipProps
 
   const row = payload[0].payload ?? {};
   return (
-    <div className="translate-x-4 -translate-y-3 rounded-md border border-white/70 bg-white/88 px-3 py-2 shadow-2xl shadow-slate-950/12 backdrop-blur-2xl">
-      <p className="max-w-[180px] truncate text-xs font-medium text-slate-500">{String(row[labelKey] ?? "")}</p>
+    <div className="translate-x-8 -translate-y-8 rounded-md border border-slate-200 bg-white px-3 py-2 shadow-[0_16px_38px_rgba(15,23,42,0.18)]">
+      <p className="max-w-[180px] truncate text-xs font-medium text-slate-600">{String(row[labelKey] ?? "")}</p>
       <p className="mt-1 text-sm font-semibold text-slate-950">{formatCompactValue(row[valueKey])}</p>
     </div>
   );
@@ -209,6 +209,6 @@ function formatCompactValue(value: ChartValue): string {
   return new Intl.NumberFormat("ru-RU", { maximumFractionDigits: 1, notation: "compact" }).format(numberValue);
 }
 
-const axisTick = { fill: "#64748b", fontSize: 11 };
-const BAR_COLORS = ["#334155", "#475569", "#64748b", "#14b8a6", "#f59e0b", "#fb7185"];
-const PIE_COLORS = ["#334155", "#14b8a6", "#f59e0b", "#fb7185", "#64748b", "#0f766e"];
+const axisTick = { fill: "#334155", fontSize: 11, fontWeight: 500 };
+const hiddenYAxisTick = { fill: "rgba(71, 85, 105, 0.26)", fontSize: 10 };
+const PIE_COLORS = ["#0f766e", "#14b8a6", "#334155", "#475569", "#64748b", "#0f766e"];
