@@ -7,8 +7,9 @@ interface AppShellProps extends PropsWithChildren {
 
 export function AppShell({ children, onHome }: AppShellProps) {
   return (
-    <div className="h-screen overflow-hidden bg-[radial-gradient(circle_at_top_left,#e2e8f0_0,#f8fafc_42%,#ffffff_100%)] text-slate-950">
-      <header className="h-16 border-b border-slate-200/55 bg-white/58 backdrop-blur-xl">
+    <div className="relative h-screen overflow-hidden bg-slate-100 bg-[url('/back.png')] bg-cover bg-center bg-no-repeat text-slate-950">
+      <div className="pointer-events-none absolute inset-0 bg-white/38 backdrop-blur-[1px]" aria-hidden="true" />
+      <header className="relative z-10 h-16 border-b border-slate-200/55 bg-white/58 backdrop-blur-xl">
         <div className="mx-auto flex h-full max-w-7xl items-center justify-between px-5">
           <button
             type="button"
@@ -26,7 +27,7 @@ export function AppShell({ children, onHome }: AppShellProps) {
           </button>
         </div>
       </header>
-      <div className="mx-auto h-[calc(100vh-4rem)] max-w-7xl px-5 py-4">{children}</div>
+      <div className="relative z-10 mx-auto h-[calc(100vh-4rem)] max-w-7xl px-5 py-4">{children}</div>
     </div>
   );
 }
