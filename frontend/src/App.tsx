@@ -29,7 +29,7 @@ export default function App() {
           <div className="grid h-full min-h-0 gap-6 xl:grid-cols-[420px_minmax(0,1fr)]">
             <UploadPanel disabled={false} onAnalyze={analyze} />
             <main className="min-h-0">
-              <ErrorState message={error} onRetry={reset} />
+              {error && <ErrorState error={error} onRetry={retryLastAnalysis} onUpload={reset} />}
             </main>
           </div>
         )}
