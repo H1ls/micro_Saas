@@ -35,28 +35,28 @@ export function AskPanel({ sessionId }: AskPanelProps) {
   }
 
   return (
-    <section className="flex min-h-0 flex-col gap-2 rounded-xl border border-[rgba(148,163,184,0.18)] bg-slate-950/20 px-4 py-3 shadow-[0_24px_80px_rgba(15,23,42,0.24)] ring-1 ring-white/25 backdrop-blur-2xl">
-      <div className="min-h-[38px] overflow-hidden rounded-md border border-[rgba(148,163,184,0.14)] bg-white/42 px-3 py-2 shadow-inner shadow-white/20">
+    <section className="flex min-h-0 flex-col gap-3 rounded-[28px] border border-[rgba(120,140,180,0.24)] bg-[rgba(219,226,238,0.72)] px-4 py-3 shadow-[0_24px_70px_rgba(31,45,70,0.16),inset_0_1px_0_rgba(255,255,255,0.58)] backdrop-blur-2xl">
+      <div className="min-h-[38px] overflow-hidden rounded-2xl border border-[rgba(120,140,180,0.18)] bg-[rgba(248,250,253,0.72)] px-3 py-2 shadow-[inset_0_1px_0_rgba(255,255,255,0.62)]">
         {lastAnswer ? (
-          <p className="line-clamp-2 text-sm leading-5 text-slate-800">{lastAnswer.answer}</p>
+          <p className="line-clamp-2 text-sm leading-5 text-[#172033]">{lastAnswer.answer}</p>
         ) : (
-          <p className="text-sm leading-5 text-slate-600">Ответ появится здесь после вопроса.</p>
+          <p className="text-sm leading-5 text-[#667085]">Ответ появится здесь после вопроса.</p>
         )}
       </div>
       <div className="flex min-h-0 items-center gap-4">
-        <h2 className="shrink-0 text-base font-semibold text-slate-950">Вопросы по данным</h2>
+        <h2 className="shrink-0 text-base font-semibold text-[#172033]">Вопросы по данным</h2>
         <form onSubmit={handleSubmit} className="flex min-w-0 flex-1 items-center gap-2">
           <input
             value={question}
             onChange={(event) => setQuestion(event.target.value)}
-            className="h-11 min-w-0 flex-1 rounded-md border border-[rgba(148,163,184,0.14)] bg-white/82 px-3 text-sm text-slate-900 outline-none transition placeholder:text-slate-500 focus:border-[rgba(148,163,184,0.34)] focus:ring-4 focus:ring-slate-300/25"
+            className="h-11 min-w-0 flex-1 rounded-xl border border-[#E2E7EF] bg-white px-3 text-sm text-[#172033] outline-none transition placeholder:text-[#98A2B3] focus:border-[#C9D3E1] focus:ring-4 focus:ring-[#EEF4FF]"
             placeholder={error || "У какого сегмента самая высокая выручка?"}
             title={error}
           />
           <button
             type="submit"
             disabled={!question.trim() || isLoading}
-            className="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-md bg-slate-950 text-white shadow-lg shadow-slate-900/10 transition hover:bg-slate-800 disabled:cursor-not-allowed disabled:bg-slate-300"
+            className="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-[#356DF3] text-white shadow-[0_8px_30px_rgba(53,109,243,0.20)] transition hover:bg-[#2F61DA] disabled:cursor-not-allowed disabled:bg-[#CBD5E1] disabled:shadow-none"
             aria-label="Задать вопрос"
             title="Задать вопрос"
           >

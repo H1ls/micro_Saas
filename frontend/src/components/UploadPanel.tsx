@@ -36,8 +36,8 @@ export function UploadPanel({ collapsed = false, disabled = false, homeLayout = 
       return;
     }
 
-    const minHeight = isWideHome ? 320 : 260;
-    const maxHeight = isWideHome ? 520 : 420;
+    const minHeight = isWideHome ? 300 : 260;
+    const maxHeight = isWideHome ? 480 : 420;
     textarea.style.height = `${minHeight}px`;
     textarea.style.height = `${Math.min(Math.max(textarea.scrollHeight, minHeight), maxHeight)}px`;
   }
@@ -54,29 +54,30 @@ export function UploadPanel({ collapsed = false, disabled = false, homeLayout = 
     <form
       onSubmit={handleSubmit}
       className={[
-        "group z-30 flex flex-col gap-4 border border-white/60 bg-white/45 p-4 shadow-2xl shadow-slate-900/10 backdrop-blur-2xl transition-all duration-500 ease-out",
+        "glass-panel glass-key group z-30 flex flex-col gap-6 p-6 transition-all duration-500 ease-out",
         collapsed && disabled
-          ? "fixed left-1/2 top-20 h-14 w-[min(760px,calc(100vw-40px))] -translate-x-1/2 overflow-hidden rounded-lg"
+            ? "fixed left-1/2 top-20 h-14 w-[min(760px,calc(100vw-40px))] -translate-x-1/2 overflow-hidden rounded-[24px]"
           : collapsed
-            ? "fixed bottom-4 left-4 h-12 w-72 overflow-hidden rounded-lg hover:h-[720px] hover:w-[420px] hover:overflow-y-auto focus-within:h-[720px] focus-within:w-[420px] focus-within:overflow-y-auto"
+            ? "fixed bottom-4 left-4 h-12 w-72 overflow-hidden rounded-[24px] hover:h-[720px] hover:w-[420px] hover:overflow-y-auto focus-within:h-[720px] focus-within:w-[420px] focus-within:overflow-y-auto"
           : isWideHome
-            ? "mx-auto h-auto w-full max-w-[1240px] rounded-lg"
-            : "h-full min-h-0 overflow-y-auto rounded-lg"
+            ? "mx-auto h-auto w-full max-w-[1240px] rounded-[28px]"
+            : "h-full min-h-0 overflow-y-auto rounded-[28px]"
       ].join(" ")}
     >
       <div className="flex items-center justify-between gap-3">
         <div className="min-w-0">
-          <h2 className="truncate text-lg font-semibold text-slate-950">Анализ данных</h2>
+          <p className="text-xs font-semibold uppercase tracking-wide text-[#356DF3]">Input</p>
+          <h2 className="truncate text-2xl font-semibold text-[#172033]">Анализ данных</h2>
         </div>
         {collapsed && (
-          <span className="shrink-0 rounded-md bg-teal-600/90 px-2 py-1 text-xs font-semibold text-white">
+          <span className="shrink-0 rounded-full bg-[#EEF4FF] px-3 py-1 text-xs font-semibold text-[#356DF3]">
             Input
           </span>
         )}
       </div>
 
-      <div className={isWideHome ? "grid items-stretch gap-4 lg:grid-cols-[320px_minmax(0,900px)]" : "flex flex-col gap-4"}>
-        <section className={isWideHome ? "flex min-h-[320px] flex-col gap-3 rounded-lg border border-white/55 bg-white/30 p-3" : "flex h-[260px] shrink-0 flex-col gap-3 rounded-lg border border-white/55 bg-white/30 p-3"}>
+      <div className={isWideHome ? "grid items-stretch gap-7 lg:grid-cols-[320px_minmax(0,1fr)]" : "flex flex-col gap-5"}>
+        <section className={isWideHome ? "glass-panel-soft flex min-h-[300px] flex-col gap-3 rounded-[24px] p-3" : "glass-panel-soft flex h-[260px] shrink-0 flex-col gap-3 rounded-[24px] p-3"}>
           <div
             onDragOver={(event) => {
               event.preventDefault();
@@ -85,8 +86,8 @@ export function UploadPanel({ collapsed = false, disabled = false, homeLayout = 
             onDragLeave={() => setIsDragging(false)}
             onDrop={handleDrop}
             className={[
-              "flex min-h-0 flex-1 cursor-pointer flex-col items-center justify-center rounded-lg border border-dashed p-4 text-center transition",
-            isDragging ? "border-teal-600 bg-teal-50/70" : "border-white/70 bg-white/35 hover:border-teal-500/70 hover:bg-white/55"
+              "flex min-h-0 flex-1 cursor-pointer flex-col items-center justify-center rounded-[22px] border border-dashed p-4 text-center transition",
+              isDragging ? "border-[#356DF3] bg-[#EEF4FF]/86" : "border-[rgba(120,140,180,0.26)] bg-white/56 hover:border-[#4F7CFF] hover:bg-[#EEF4FF]/58"
             ].join(" ")}
             onClick={() => inputRef.current?.click()}
           >
@@ -97,20 +98,20 @@ export function UploadPanel({ collapsed = false, disabled = false, homeLayout = 
               accept=".csv,.xls,.xlsx"
               onChange={(event) => setFile(event.target.files?.item(0) ?? null)}
             />
-            <Upload className="h-8 w-8 text-slate-700" aria-hidden="true" />
-            <p className="mt-3 text-sm font-medium text-slate-900">Перетащите файл сюда или выберите его</p>
-            <p className="mt-1 text-xs text-slate-500">CSV, XLS, XLSX</p>
+            <Upload className="h-8 w-8 text-[#356DF3]" aria-hidden="true" />
+            <p className="mt-4 text-sm font-medium text-[#172033]">Перетащите файл сюда или выберите его</p>
+            <p className="mt-1 text-xs font-medium text-[#98A2B3]">CSV, XLS, XLSX</p>
           </div>
 
           {file && (
-            <div className="flex items-center justify-between gap-3 rounded-md border border-white/60 bg-white/45 px-3 py-3">
+            <div className="glass-panel-soft flex items-center justify-between gap-3 rounded-2xl px-3 py-3">
               <div className="flex min-w-0 items-center gap-3">
-                <FileSpreadsheet className="h-5 w-5 shrink-0 text-teal-700" aria-hidden="true" />
-                <span className="truncate text-sm font-medium text-slate-800">{file.name}</span>
+                <FileSpreadsheet className="h-5 w-5 shrink-0 text-[#356DF3]" aria-hidden="true" />
+                <span className="truncate text-sm font-medium text-[#172033]">{file.name}</span>
               </div>
               <button
                 type="button"
-                className="rounded-md p-1 text-slate-500 transition hover:bg-white/70 hover:text-slate-800"
+                className="rounded-lg p-1 text-[#98A2B3] transition hover:bg-[#EEF4FF] hover:text-[#172033]"
                 onClick={() => setFile(null)}
                 aria-label="Удалить выбранный файл"
                 title="Удалить выбранный файл"
@@ -122,15 +123,15 @@ export function UploadPanel({ collapsed = false, disabled = false, homeLayout = 
         </section>
 
         <label className="flex shrink-0 flex-col gap-2">
-          <span className="text-sm font-medium text-slate-800">Сырой текст</span>
+          <span className="text-sm font-medium text-[#667085]">Сырой текст</span>
           <textarea
             ref={textareaRef}
             value={rawText}
             onChange={(event) => handleRawTextChange(event.target.value)}
             placeholder="product,region,revenue&#10;Alpha,North,1200&#10;Beta,South,950"
             className={[
-              "resize-none overflow-y-auto rounded-lg border border-white/70 bg-white/55 px-3 py-3 text-sm leading-6 text-slate-900 outline-none transition-[height,border-color,box-shadow,background-color] duration-200 placeholder:text-slate-400 focus:border-teal-600 focus:ring-4 focus:ring-teal-100/70",
-              isWideHome ? "h-[320px] min-h-[320px] max-h-[520px]" : "h-[260px] min-h-[260px] max-h-[420px]"
+              "glass-panel-soft resize-none overflow-y-auto rounded-[24px] px-4 py-3 text-sm font-normal leading-6 text-[#172033] outline-none transition-[height,border-color,box-shadow,background-color] duration-200 placeholder:text-[#98A2B3] focus:border-[rgba(20,184,166,0.30)] focus:bg-white/72 focus:ring-4 focus:ring-[#EEF4FF]",
+              isWideHome ? "h-[300px] min-h-[300px] max-h-[480px]" : "h-[260px] min-h-[260px] max-h-[420px]"
             ].join(" ")}
           />
         </label>
@@ -139,7 +140,7 @@ export function UploadPanel({ collapsed = false, disabled = false, homeLayout = 
       <button
         type="submit"
         disabled={!canSubmit || disabled}
-        className="inline-flex h-11 shrink-0 items-center justify-center gap-2 rounded-md bg-slate-950 px-4 text-sm font-semibold text-white shadow-lg shadow-slate-900/10 transition hover:bg-slate-800 disabled:cursor-not-allowed disabled:bg-slate-300"
+        className="mx-auto inline-flex h-12 shrink-0 items-center justify-center gap-2 rounded-xl bg-[#356DF3] px-6 text-sm font-semibold text-white shadow-[0_8px_30px_rgba(53,109,243,0.22)] transition hover:bg-[#2F61DA] disabled:cursor-not-allowed disabled:bg-[#CBD5E1] disabled:shadow-none"
       >
         {disabled ? <Loader2 className="h-4 w-4 animate-spin" aria-hidden="true" /> : <FileSpreadsheet className="h-4 w-4" aria-hidden="true" />}
         Анализировать

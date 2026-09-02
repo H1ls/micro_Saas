@@ -31,26 +31,26 @@ export function MascotEmptyPanel({
   compact = true,
 }: MascotEmptyPanelProps) {
   return (
-    <section className="min-h-0 overflow-hidden rounded-lg border border-white/60 bg-white/45 p-4 shadow-[0_24px_80px_rgba(35,54,73,0.14)] backdrop-blur-2xl">
-      <div className="grid h-full min-h-0 items-center gap-5 rounded-lg border border-white/50 bg-white/35 p-4 shadow-inner shadow-white/30 md:grid-cols-[minmax(130px,0.55fr)_minmax(180px,1fr)]">
+    <section className="glass-panel min-h-0 overflow-hidden rounded-[28px] p-5">
+      <div className="glass-panel-soft grid h-full min-h-0 items-center gap-6 rounded-[24px] p-5 md:grid-cols-[minmax(130px,0.55fr)_minmax(180px,1fr)]">
         <div className="flex h-full min-h-0 items-center justify-center">
           <img
             src={imageSrc}
             alt=""
-            className={`${compact ? "max-h-44 max-w-[220px]" : "max-h-full max-w-[360px]"} w-full object-contain drop-shadow-[0_24px_36px_rgba(32,72,88,0.18)]`}
+            className={`${compact ? "max-h-44 max-w-[220px]" : "max-h-full max-w-[360px]"} w-full object-contain drop-shadow-[0_24px_36px_rgba(31,45,70,0.12)]`}
           />
         </div>
         <div className="flex min-h-0 flex-col justify-center">
-          <h2 className={`${compact ? "text-lg" : "text-2xl"} font-semibold text-slate-950`}>{title}</h2>
-          <p className="mt-3 max-w-xl text-sm leading-6 text-slate-600">{message}</p>
-          {secondaryMessage && <p className="mt-2 max-w-xl text-sm leading-6 text-slate-500">{secondaryMessage}</p>}
+          <h2 className={`${compact ? "text-lg" : "text-2xl"} font-semibold text-[#172033]`}>{title}</h2>
+          <p className="mt-3 max-w-xl text-sm leading-6 text-[#667085]">{message}</p>
+          {secondaryMessage && <p className="mt-2 max-w-xl text-sm leading-6 text-[#98A2B3]">{secondaryMessage}</p>}
           {(onRetry || onUpload) && (
             <div className="mt-5 flex flex-col gap-3 sm:flex-row">
               {onRetry && (
                 <button
                   type="button"
                   onClick={onRetry}
-                  className="inline-flex h-11 items-center justify-center gap-2 rounded-md border border-white/70 bg-white/55 px-4 text-sm font-semibold text-slate-800 shadow-sm transition hover:-translate-y-0.5 hover:bg-white/80"
+                  className="inline-flex h-11 items-center justify-center gap-2 rounded-xl border border-[#E2E7EF] bg-white px-4 text-sm font-semibold text-[#172033] shadow-[0_8px_30px_rgba(31,45,70,0.04)] transition hover:-translate-y-0.5 hover:bg-[#FAFBFD]"
                 >
                   <RotateCcw className="h-4 w-4" aria-hidden="true" />
                   Попробовать снова
@@ -60,7 +60,7 @@ export function MascotEmptyPanel({
                 <button
                   type="button"
                   onClick={onUpload}
-                  className="inline-flex h-11 items-center justify-center gap-2 rounded-md bg-teal-600 px-4 text-sm font-semibold text-white shadow-lg shadow-teal-900/15 transition hover:-translate-y-0.5 hover:bg-teal-700"
+                  className="inline-flex h-11 items-center justify-center gap-2 rounded-xl bg-[#356DF3] px-4 text-sm font-semibold text-white shadow-[0_8px_30px_rgba(53,109,243,0.20)] transition hover:-translate-y-0.5 hover:bg-[#2F61DA]"
                 >
                   <Upload className="h-4 w-4" aria-hidden="true" />
                   Загрузить файл
@@ -82,58 +82,50 @@ export function LoadingState() {
   ];
 
   return (
-    <section className="flex h-full min-h-0 items-center justify-center overflow-hidden rounded-lg border border-white/55 bg-white/35 p-4 shadow-[0_28px_90px_rgba(37,58,76,0.14)] backdrop-blur-2xl">
-      <div className="grid h-[min(550px,100%)] w-full max-w-[940px] items-center gap-5 overflow-hidden rounded-lg border border-white/60 bg-white/42 p-5 shadow-inner shadow-white/30 backdrop-blur-xl md:grid-cols-[minmax(220px,0.78fr)_minmax(320px,1fr)]">
+    <section className="glass-panel glass-key flex h-full min-h-0 items-center justify-center overflow-hidden rounded-[28px] p-5">
+      <div className="glass-panel-soft grid h-[min(550px,100%)] w-full max-w-[940px] items-center gap-7 overflow-hidden rounded-[24px] p-6 md:grid-cols-[minmax(220px,0.78fr)_minmax(320px,1fr)]">
         <div className="relative flex h-full min-h-0 items-center justify-center">
-          <div className="absolute inset-10 rounded-full bg-cyan-200/20 blur-3xl" aria-hidden="true" />
+          <div className="absolute inset-10 rounded-full bg-[#EEF4FF] blur-3xl" aria-hidden="true" />
           <img
             src="/loading-mascot.png"
             alt="Загрузка анализа данных"
-            className="relative max-h-[360px] w-full object-contain drop-shadow-[0_28px_42px_rgba(21,94,117,0.18)]"
+            className="relative max-h-[360px] w-full object-contain drop-shadow-[0_28px_42px_rgba(31,45,70,0.14)]"
           />
         </div>
 
         <div className="flex min-h-0 flex-col justify-center">
           <div className="flex items-center justify-between gap-4">
             <div>
-              <p className="text-xs font-semibold uppercase tracking-[0.18em] text-teal-700">Подготовка dashboard</p>
-              <h2 className="mt-2 text-xl font-semibold text-slate-950">Анализируем данные</h2>
+              <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[#356DF3]">Подготовка dashboard</p>
+              <h2 className="mt-2 text-xl font-semibold text-[#172033]">Анализируем данные</h2>
             </div>
-            <div className="h-2 w-24 overflow-hidden rounded-full bg-slate-200/70">
-              <div className="loading-progress h-full rounded-full bg-teal-500" />
+            <div className="h-2 w-24 overflow-hidden rounded-full bg-[#EEF4FF]">
+              <div className="loading-progress h-full rounded-full bg-[#356DF3]" />
             </div>
           </div>
 
-          <p className="mt-3 max-w-xl text-sm leading-6 text-slate-600">
-            Проверяем входные данные, выделяем структуру, собираем короткую сводку и готовим безопасные данные для
-            графиков.
+          <p className="mt-3 max-w-xl text-sm leading-6 text-[#667085]">
+            Проверяем входные данные, выделяем структуру, собираем короткую сводку и готовим безопасные данные для графиков.
           </p>
 
-          <div className="mt-5 space-y-3">
+          <div className="mt-6 space-y-3">
             {steps.map((step, index) => {
               const Icon = step.icon;
               return (
                 <div
                   key={step.label}
-                  className="loading-step flex items-center gap-3 rounded-lg border border-white/55 bg-white/45 px-3 py-2.5 shadow-sm"
+                  className="glass-panel-soft loading-step flex items-center gap-3 rounded-2xl px-3 py-2.5"
                   style={{ animationDelay: `${index * 900}ms` }}
                 >
-                  <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-md bg-slate-950 text-white shadow-sm">
+                  <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-[#EEF4FF] text-[#356DF3]">
                     <Icon className="h-4 w-4" aria-hidden="true" />
                   </span>
-                  <span className="min-w-0 flex-1 text-sm font-medium text-slate-800">{step.label}</span>
-                  <Check className="h-4 w-4 shrink-0 text-teal-600" aria-hidden="true" />
+                  <span className="min-w-0 flex-1 text-sm font-medium text-[#172033]">{step.label}</span>
+                  <Check className="h-4 w-4 shrink-0 text-[#17A673]" aria-hidden="true" />
                 </div>
               );
             })}
           </div>
-
-          <div className="mt-5 grid gap-3 sm:grid-cols-3">
-            <div className="loading-skeleton h-14 rounded-lg border border-white/50 bg-white/40" />
-            <div className="loading-skeleton h-14 rounded-lg border border-white/50 bg-white/40 [animation-delay:180ms]" />
-            <div className="loading-skeleton h-14 rounded-lg border border-white/50 bg-white/40 [animation-delay:360ms]" />
-          </div>
-          <div className="loading-skeleton mt-3 h-20 rounded-lg border border-white/50 bg-white/40 [animation-delay:540ms]" />
         </div>
       </div>
     </section>

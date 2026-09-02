@@ -1,35 +1,36 @@
 # AI Dashboard MVP
 
-Micro-SaaS MVP that turns CSV, Excel or raw text into a small AI dashboard. The app has no auth, billing, database, queues, vector search or background jobs.
+Micro-SaaS MVP, который превращает CSV, Excel или обычный текст в небольшой AI-дашборд.  
+В приложении нет авторизации, биллинга, базы данных, очередей, векторного поиска и фоновых задач.
 
-## Stack
+## Стек
 
 - Backend: Python, FastAPI, Pydantic, pandas, OpenAI-compatible client
 - Frontend: React, Vite, TypeScript, Tailwind CSS, Recharts
-- Storage: in-memory dataset sessions with TTL
+- Хранение: in-memory сессии датасетов с TTL
 
-## Setup
+## Установка
 
-Create `.env` from the template:
+Создайте `.env` из шаблона:
 
 ```powershell
 Copy-Item .env.example .env
 ```
 
-Install backend dependencies:
+Установите зависимости backend:
 
 ```powershell
 .venv\Scripts\python.exe -m pip install -r requirements.txt
 ```
 
-Install frontend dependencies:
+Установите зависимости frontend:
 
 ```powershell
 cd frontend
 npm.cmd install
 ```
 
-## Run
+## Запуск
 
 Backend:
 
@@ -44,17 +45,17 @@ cd frontend
 npm.cmd run dev
 ```
 
-Open:
+Откройте в браузере:
 
 ```text
 http://localhost:5173/
 ```
 
-Vite proxies `/api/*` to `http://127.0.0.1:8000`, so the browser does not need backend CORS for local MVP use.
+Vite проксирует запросы `/api/*` на `http://127.0.0.1:8000`, поэтому для локального MVP отдельная настройка CORS для backend не требуется.
 
 ## LLM
 
-For a local OpenAI-compatible server:
+Для локального OpenAI-compatible сервера:
 
 ```env
 LOCAL_AI_BASE_URL=http://127.0.0.1:1234/v1
@@ -62,19 +63,19 @@ LOCAL_AI_MODEL=qwen3.5-9b
 OPENAI_API_KEY=local
 ```
 
-If the LLM is unavailable, returns invalid JSON, or references invalid columns, `/api/analyze` uses deterministic fallback analysis and `/api/ask` returns:
+Если LLM недоступна, возвращает невалидный JSON или ссылается на несуществующие столбцы, `/api/analyze` использует детерминированный fallback-анализ, а `/api/ask` возвращает:
 
 ```text
-I cannot answer this from the uploaded dataset.
+Я не могу ответить на этот вопрос на основе загруженного датасета.
 ```
 
-## Input Formats
+## Поддерживаемые форматы
 
 - CSV: `.csv`
-- Excel: `.xls`, `.xlsx`, first sheet only
-- Raw text: pasted structured text or line-based notes
+- Excel: `.xls`, `.xlsx`, используется только первый лист
+- Raw text: вставленный структурированный текст или построчные заметки
 
-Minimal sample:
+Минимальный пример:
 
 ```csv
 date,segment,revenue
@@ -85,7 +86,7 @@ date,segment,revenue
 
 ## API
 
-Analyze:
+Анализ:
 
 ```powershell
 Invoke-RestMethod `
@@ -94,33 +95,33 @@ Invoke-RestMethod `
   -Form @{ raw_text = "segment,revenue`nSMB,100`nEnterprise,250`n" }
 ```
 
-Ask:
+Вопрос по данным:
 
 ```powershell
 Invoke-RestMethod `
   -Uri "http://127.0.0.1:8000/api/ask" `
   -Method Post `
   -ContentType "application/json" `
-  -Body '{"session_id":"SESSION_ID_FROM_ANALYZE","question":"Which segment has the highest revenue?"}'
+  -Body '{"session_id":"SESSION_ID_FROM_ANALYZE","question":"Какой сегмент имеет наибольшую выручку?"}'
 ```
 
-## Example Questions
+## Примеры вопросов
 
-- Which segment has the highest revenue?
-- What changed over time?
-- Which category contributes the most?
-- Which columns were used for the answer?
+- Какой сегмент имеет наибольшую выручку?
+- Что изменилось со временем?
+- Какая категория вносит наибольший вклад?
+- Какие столбцы использовались для ответа?
 
-## MVP Limits
+## Ограничения MVP
 
-- No auth, billing or persistent history
-- No database; sessions reset when backend restarts
-- No vector RAG or embeddings
-- No background jobs
-- Excel support is intentionally simple: first sheet, standard tables
-- LLM answers are constrained by prompt and code validation, but fallback remains the reliability layer
+- Нет авторизации, биллинга и постоянной истории
+- Нет базы данных; сессии сбрасываются при перезапуске backend
+- Нет vector RAG и embeddings
+- Нет фоновых задач
+- Поддержка Excel намеренно упрощена: только первый лист и стандартные таблицы
+- Ответы LLM ограничены prompt-инструкциями и валидацией кода, но fallback остается слоем надежности
 
-## Checks
+## Проверки
 
 ```powershell
 .venv\Scripts\python.exe -m compileall app tests

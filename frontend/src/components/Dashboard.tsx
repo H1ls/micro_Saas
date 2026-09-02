@@ -16,7 +16,7 @@ export function Dashboard({ session, onRetry, onUpload }: DashboardProps) {
   const isFallback = session.analysis_source === "fallback";
 
   return (
-    <div className={`dashboard-enter grid h-full min-h-0 gap-4 ${isFallback ? "grid-rows-[minmax(0,1fr)_122px]" : "grid-rows-[auto_minmax(0,1fr)_122px]"}`}>
+    <div className={`dashboard-enter grid h-full min-h-0 gap-4 ${isFallback ? "grid-rows-[minmax(0,1fr)_124px]" : "grid-rows-[auto_minmax(0,1fr)_132px]"}`}>
       {!isFallback && <InsightHero analysis={session.analysis} />}
       <div className="charts-rise h-full min-h-0">
         {isFallback ? (

@@ -19,7 +19,13 @@ export function ChartGrid({ charts, selectedLabel, onSelectLabel }: ChartGridPro
   }
 
   return (
-    <section className="grid h-full min-h-0 gap-4" style={{ gridTemplateColumns: `repeat(${Math.min(charts.length, 3)}, minmax(0, 1fr))` }}>
+    <section
+      className="grid h-full min-h-0 content-start gap-4"
+      style={{
+        gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 280px), 1fr))",
+        gridAutoRows: "auto",
+      }}
+    >
       {charts.slice(0, 3).map((chart) => (
         <ChartRenderer
           key={chart.spec.id}

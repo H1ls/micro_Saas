@@ -9,13 +9,13 @@ __pycache__/
 htmlcov/
 
 # Virtual environments
-../.venv/
+.venv/
 venv/
 env/
 
 # Environment and secrets
 .env
-.env.example
+.env.*
 !.env.example
 # Frontend
 node_modules/
@@ -34,7 +34,7 @@ Thumbs.db
 *.tmp
 tmp/
 temp/
-error.png
-load.png
+docs/error.png
+docs/load.png
 total_reviev.md
-/backeend/test
+/test

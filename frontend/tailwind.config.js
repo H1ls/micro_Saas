@@ -4,7 +4,7 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        sans: ["Inter", "ui-sans-serif", "system-ui", "sans-serif"]
+        sans: ["Geist Sans", "Geist", "Inter", "ui-sans-serif", "system-ui", "sans-serif"]
       }
     }
   },
